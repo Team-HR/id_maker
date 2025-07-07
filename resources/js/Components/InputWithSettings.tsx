@@ -1,10 +1,11 @@
 import { Settings2 } from "lucide-react";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface Props {
+    children: ReactNode;
     placeholder?: string;
-    inputValue: string;
-    setInputValue: React.Dispatch<React.SetStateAction<string>>;
+    disabled?: boolean;
+
     xAxis: number;
     setXAxis: React.Dispatch<React.SetStateAction<number>>;
     yAxis: number;
@@ -14,29 +15,29 @@ interface Props {
 }
 
 const InputWithSettings = ({
+    children,
     placeholder,
-    inputValue,
+    disabled,
     xAxis,
     yAxis,
     fontSize,
-    setInputValue,
     setXAxis,
     setYAxis,
     setFontSize,
 }: Props) => {
     return (
         <div className="join">
-            <input
-                type="text"
-                placeholder={placeholder}
-                className="w-full input"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
+            {children}
+
             <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="btn btn-neutral">
+                <button
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-neutral"
+                    disabled={disabled}
+                >
                     <Settings2 size={18} />
-                </div>
+                </button>
                 <div
                     tabIndex={0}
                     className="dropdown-content z-[1] w-56 p-4 bg-base-100 rounded-box shadow-lg"
