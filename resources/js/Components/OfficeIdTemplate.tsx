@@ -1,19 +1,43 @@
+import { Settings2 } from "lucide-react";
 import React, { useState } from "react";
+import InputWithSettings from "./InputWithSettings";
 
 const OfficeIdtemplate = () => {
     const [firstname, setFirstname] = useState("");
+    const [firstnameXAxis, setFirstnameXAxis] = useState(10);
+    const [firstnameYAxis, setFirstnameYAxis] = useState(310);
+    const [firstnameFontsize, setFirstnameFontsize] = useState(30);
+
+    const [lastname, setLastname] = useState("");
+    const [lastnameXAxis, setLastnameXAxis] = useState(10);
+    const [lastnameYAxis, setLastnameYAxis] = useState(340);
+    const [lastnameFontsize, setLastnameFontsize] = useState(30);
 
     return (
         <div className="flex">
-            <div className="flex flex-col w-full p-4 max-w-4/12">
-                <div className="flex flex-col gap-2">
-                    <input
-                        type="text"
-                        placeholder="Firstname"
-                        className="w-full input input-lg"
-                    />
-                    test
-                </div>
+            <div className="flex flex-col w-full gap-2 p-4 max-w-4/12">
+                <InputWithSettings
+                    placeholder="Firstname"
+                    inputValue={firstname}
+                    setInputValue={setFirstname}
+                    xAxis={firstnameXAxis}
+                    setXAxis={setFirstnameXAxis}
+                    yAxis={firstnameYAxis}
+                    setYAxis={setFirstnameYAxis}
+                    fontSize={firstnameFontsize}
+                    setFontSize={setFirstnameFontsize}
+                />
+                <InputWithSettings
+                    placeholder="Lastname"
+                    inputValue={lastname}
+                    setInputValue={setLastname}
+                    xAxis={firstnameXAxis}
+                    setXAxis={setLastnameXAxis}
+                    yAxis={lastnameYAxis}
+                    setYAxis={setLastnameYAxis}
+                    fontSize={lastnameFontsize}
+                    setFontSize={setLastnameFontsize}
+                />
             </div>
             <div className="flex justify-center w-full p-4 max-w-8/12 bg-stone-400/50">
                 <div
@@ -31,11 +55,25 @@ const OfficeIdtemplate = () => {
                         className="absolute z-[5] max-w-45"
                         style={{ right: 24, top: 100 }}
                     />
-                    <div className="absolute z-20 text-[0.3in] font-semibold uppercase text-base-100 top-78 right-2.5">
-                        Kim Harold V.
+                    <div
+                        className="absolute z-20 font-semibold uppercase text-base-100 "
+                        style={{
+                            fontSize: firstnameFontsize,
+                            right: firstnameXAxis,
+                            top: firstnameYAxis,
+                        }}
+                    >
+                        {firstname}
                     </div>
-                    <div className="absolute z-20 text-[0.3in] font-semibold uppercase text-base-100 top-85 right-2.5">
-                        Pinanonang
+                    <div
+                        className="absolute z-20 font-semibold uppercase text-base-100 "
+                        style={{
+                            fontSize: lastnameFontsize,
+                            right: lastnameXAxis,
+                            top: lastnameYAxis,
+                        }}
+                    >
+                        {lastname}
                     </div>
                     <div className="absolute z-20 text-[0.22in] text-base-100 top-110 right-2.5">
                         Office of the Human Resource
