@@ -15,6 +15,11 @@ const OfficeIdtemplate = () => {
     const [lastnameYAxis, setLastnameYAxis] = useState(340);
     const [lastnameFontsize, setLastnameFontsize] = useState(30);
 
+    const [position, setPosition] = useState("");
+    const [positionXAxis, setPositionXAxis] = useState(10);
+    const [positionYAxis, setPositionYAxis] = useState(385);
+    const [positionFontsize, setPositionFontsize] = useState(20);
+
     const [officeInput, setOfficeInput] = useState("");
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
     const [officeInputYAxis, setOfficeInputYAxis] = useState(445);
@@ -81,6 +86,26 @@ const OfficeIdtemplate = () => {
                         </InputWithSettings>
                     </fieldset>
                 </div>
+
+                <fieldset className="w-full fieldset">
+                    <legend className="fieldset-legend">Position</legend>
+                    <InputWithSettings
+                        xAxis={positionXAxis}
+                        setXAxis={setPositionXAxis}
+                        yAxis={positionYAxis}
+                        setYAxis={setPositionYAxis}
+                        fontSize={positionFontsize}
+                        setFontSize={setPositionFontsize}
+                        disabled={!position}
+                    >
+                        <input
+                            type="text"
+                            className="w-full input"
+                            value={position}
+                            onChange={(e) => setPosition(e.target.value)}
+                        />
+                    </InputWithSettings>
+                </fieldset>
 
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">
@@ -165,6 +190,16 @@ const OfficeIdtemplate = () => {
                         }}
                     >
                         {lastname}
+                    </div>
+                    <div
+                        className="absolute z-20 font-serif text-neutral "
+                        style={{
+                            fontSize: positionFontsize,
+                            right: positionXAxis,
+                            top: positionYAxis,
+                        }}
+                    >
+                        {position}
                     </div>
                     <div
                         className="absolute z-20 leading-5 text-end text-base-100"
