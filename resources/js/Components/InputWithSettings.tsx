@@ -69,7 +69,7 @@ const InputWithSettings = ({
                                 className="w-24 text-center input input-bordered input-sm"
                             />
                         </label>
-                        {fontSize && (
+                        {fontSize !== undefined && (
                             <label className="flex items-center justify-between label">
                                 <span className="label-text">Font Size:</span>
                                 <input
@@ -84,7 +84,7 @@ const InputWithSettings = ({
                                 />
                             </label>
                         )}
-                        {scale && (
+                        {scale !== undefined && (
                             <label className="flex items-center justify-between label">
                                 <span className="label-text">Scale:</span>
                                 <input

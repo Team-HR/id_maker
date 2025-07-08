@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
 import TemplateLayout from "@/Layouts/TemplateLayout";
+import { router } from "@inertiajs/react";
 
 const OfficeIdtemplate = () => {
     const [firstname, setFirstname] = useState("");
@@ -32,6 +33,10 @@ const OfficeIdtemplate = () => {
     const [pictureYAxis, setPictureYAxis] = useState(100);
     const [pictureScale, setPictureScale] = useState(200);
 
+    // FOR PRINTING HERE
+    const [isPrinting, setIsPrinting] = useState<boolean>(false);
+    const idFaceCount = 2;
+
     const handleOfficeInputChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -49,9 +54,61 @@ const OfficeIdtemplate = () => {
         setFilteredOffices([]); // optionally hide suggestions after selection
     };
 
+    const handleSave = async () => {
+        const data = {
+            firstname: {
+                value: firstname,
+                xAxis: firstnameXAxis,
+                yAxis: firstnameYAxis,
+                fontSize: firstnameFontsize,
+            },
+            lastname: {
+                value: lastname,
+                xAxis: lastnameXAxis,
+                yAxis: lastnameYAxis,
+                fontSize: lastnameFontsize,
+            },
+            position: {
+                value: position,
+                xAxis: positionXAxis,
+                yAxis: positionYAxis,
+                fontSize: positionFontsize,
+            },
+            office: {
+                value: officeInput,
+                xAxis: officeInputXAxis,
+                yAxis: officeInputYAxis,
+                fontSize: officeInputFontSize,
+            },
+            picture: {
+                scale: pictureScale,
+                xAxis: pictureXAxis,
+                yAxis: pictureYAxis,
+                file: picture,
+            },
+        };
+
+        await router.post(route("test.route", { data, picture }));
+        console.log("Saved Data:", data);
+        // You can now send this `data` object to an API, localStorage, etc.
+    };
+
+    const handlePrint = () => {
+        setIsPrinting(true);
+        const printContents = document.getElementById("print-area")?.innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        if (printContents) {
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            window.location.reload(); // reload to restore interactivity after print
+        }
+    };
+
     return (
         <TemplateLayout title="Office Id Template">
-            <div className="flex h-fit">
+            <div className="flex h-[calc(100vh-64px)] items-center">
                 <div className="p-8 max-w-4/12">
                     <div className="flex flex-col w-full gap-2 p-8 rounded-lg shadow-xl bg-base-100">
                         <div className="flex gap-2">
@@ -180,7 +237,7 @@ const OfficeIdtemplate = () => {
                             </InputWithSettings>
                             {officeInput.trim() !== "" &&
                                 filteredOffices.length > 0 && (
-                                    <div className="mt-1 overflow-x-auto border max-h-56 rounded-box border-base-content/5 bg-base-100">
+                                    <div className="mt-1 overflow-x-auto border max-h-32 rounded-box border-base-content/5 bg-base-100">
                                         <table className="table table-sm">
                                             <tbody>
                                                 {filteredOffices.map(
@@ -204,75 +261,102 @@ const OfficeIdtemplate = () => {
                                 )}
                         </fieldset>
                         <div className="divider"></div>
-                        <button className="btn btn-primary">Save</button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleSave()}
+                            disabled={
+                                !firstname ||
+                                !lastname ||
+                                !picture ||
+                                !position ||
+                                !officeInput
+                            }
+                        >
+                            Save
+                        </button>
+                        <button
+                            className="btn btn-primary btn-ghost"
+                            onClick={() => handlePrint()}
+                            disabled={
+                                !firstname ||
+                                !lastname ||
+                                !picture ||
+                                !position ||
+                                !officeInput
+                            }
+                        >
+                            Print
+                        </button>
                     </div>
                 </div>
 
-                <div className="flex justify-center w-full p-4 max-w-8/12 bg-stone-400/50">
-                    <div
-                        style={{ width: "3.8in", height: "5.49in" }}
-                        className="relative overflow-hidden shadow bg-base-100"
-                    >
-                        <img
-                            src="/images/office_id_template.png"
-                            alt="id template"
-                            className="relative z-10 object-contain w-full h-full"
-                        />
-                        <img
-                            src={picturePreviewUrl}
-                            alt="pp"
-                            className="absolute z-[5] object-cover"
-                            style={{
-                                right: pictureXAxis,
-                                top: pictureYAxis,
-                                width: pictureScale,
-                            }}
-                        />
+                <div
+                    className="flex items-center justify-center w-full h-full p-4 max-w-8/12 bg-stone-400/50"
+                    id="print-area"
+                >
+                    {Array.from({ length: 2 }).map((_, i) => (
                         <div
-                            className="absolute z-20 font-semibold uppercase text-base-100"
-                            style={{
-                                fontSize: firstnameFontsize,
-                                right: firstnameXAxis,
-                                top: firstnameYAxis,
-                            }}
+                            style={{ width: "3.79in", height: "5.48in" }}
+                            className="relative overflow-hidden shadow bg-base-100"
                         >
-                            {firstname}
+                            <img
+                                src="/images/office_id_template.png"
+                                alt="id template"
+                                className="relative z-10 object-contain w-full h-full"
+                            />
+                            <img
+                                src={picturePreviewUrl}
+                                alt="pp"
+                                className="absolute z-[5] object-cover"
+                                style={{
+                                    right: pictureXAxis,
+                                    top: pictureYAxis,
+                                    width: pictureScale,
+                                }}
+                            />
+                            <div
+                                className="absolute z-20 font-semibold uppercase text-base-100"
+                                style={{
+                                    fontSize: firstnameFontsize,
+                                    right: firstnameXAxis,
+                                    top: firstnameYAxis,
+                                }}
+                            >
+                                {firstname}
+                            </div>
+                            <div
+                                className="absolute z-20 font-semibold uppercase text-base-100"
+                                style={{
+                                    fontSize: lastnameFontsize,
+                                    right: lastnameXAxis,
+                                    top: lastnameYAxis,
+                                }}
+                            >
+                                {lastname}
+                            </div>
+                            <div
+                                className="absolute z-20 font-serif text-neutral "
+                                style={{
+                                    fontSize: positionFontsize,
+                                    right: positionXAxis,
+                                    top: positionYAxis,
+                                }}
+                            >
+                                {position}
+                            </div>
+                            <div
+                                className="absolute z-20 leading-5 text-end text-base-100"
+                                style={{
+                                    fontSize: officeInputFontSize,
+                                    right: officeInputXAxis,
+                                    top: officeInputYAxis,
+                                }}
+                            >
+                                {officeInput}
+                            </div>
                         </div>
-                        <div
-                            className="absolute z-20 font-semibold uppercase text-base-100"
-                            style={{
-                                fontSize: lastnameFontsize,
-                                right: lastnameXAxis,
-                                top: lastnameYAxis,
-                            }}
-                        >
-                            {lastname}
-                        </div>
-                        <div
-                            className="absolute z-20 font-serif text-neutral "
-                            style={{
-                                fontSize: positionFontsize,
-                                right: positionXAxis,
-                                top: positionYAxis,
-                            }}
-                        >
-                            {position}
-                        </div>
-                        <div
-                            className="absolute z-20 leading-5 text-end text-base-100"
-                            style={{
-                                fontSize: officeInputFontSize,
-                                right: officeInputXAxis,
-                                top: officeInputYAxis,
-                            }}
-                        >
-                            {officeInput}
-                        </div>
-                    </div>
+                    ))}
                 </div>
-            </div>
-            <div className="w-full p-4 text-4xl italic font-bold text-center uppercase shadow bg-base-100">
-                Printing
             </div>
         </TemplateLayout>
     );
