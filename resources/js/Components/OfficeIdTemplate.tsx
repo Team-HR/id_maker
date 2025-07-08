@@ -1,9 +1,10 @@
 import { Settings2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
 import TemplateLayout from "@/Layouts/TemplateLayout";
 import { router } from "@inertiajs/react";
+import { useReactToPrint } from "react-to-print";
 
 const OfficeIdtemplate = () => {
     const [firstname, setFirstname] = useState("");
@@ -34,8 +35,14 @@ const OfficeIdtemplate = () => {
     const [pictureScale, setPictureScale] = useState(200);
 
     // FOR PRINTING HERE
-    const [isPrinting, setIsPrinting] = useState<boolean>(false);
-    const idFaceCount = 2;
+    const [isPrinting, setIsPrinting] = useState(false);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const reactToPrintFn = useReactToPrint({
+        contentRef,
+        onAfterPrint: () => {
+            setIsPrinting(false);
+        },
+    });
 
     const handleOfficeInputChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -93,18 +100,68 @@ const OfficeIdtemplate = () => {
         // You can now send this `data` object to an API, localStorage, etc.
     };
 
-    const handlePrint = () => {
-        setIsPrinting(true);
-        const printContents = document.getElementById("print-area")?.innerHTML;
-        const originalContents = document.body.innerHTML;
-
-        if (printContents) {
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-            window.location.reload(); // reload to restore interactivity after print
-        }
-    };
+    const cardLayout = (
+        <div
+            style={{ width: "3.79in", height: "5.48in" }}
+            className="relative overflow-hidden shadow bg-base-100"
+        >
+            <img
+                src="/images/office_id_template.png"
+                alt="id template"
+                className="relative z-10 object-contain w-full h-full"
+            />
+            <img
+                src={picturePreviewUrl}
+                alt="pp"
+                className="absolute z-[5] object-cover"
+                style={{
+                    right: pictureXAxis,
+                    top: pictureYAxis,
+                    width: pictureScale,
+                }}
+            />
+            <div
+                className="absolute z-20 font-semibold uppercase text-base-100"
+                style={{
+                    fontSize: firstnameFontsize,
+                    right: firstnameXAxis,
+                    top: firstnameYAxis,
+                }}
+            >
+                {firstname}
+            </div>
+            <div
+                className="absolute z-20 font-semibold uppercase text-base-100"
+                style={{
+                    fontSize: lastnameFontsize,
+                    right: lastnameXAxis,
+                    top: lastnameYAxis,
+                }}
+            >
+                {lastname}
+            </div>
+            <div
+                className="absolute z-20 font-serif text-neutral"
+                style={{
+                    fontSize: positionFontsize,
+                    right: positionXAxis,
+                    top: positionYAxis,
+                }}
+            >
+                {position}
+            </div>
+            <div
+                className="absolute z-20 leading-5 text-end text-base-100"
+                style={{
+                    fontSize: officeInputFontSize,
+                    right: officeInputXAxis,
+                    top: officeInputYAxis,
+                }}
+            >
+                {officeInput}
+            </div>
+        </div>
+    );
 
     return (
         <TemplateLayout title="Office Id Template">
@@ -276,7 +333,10 @@ const OfficeIdtemplate = () => {
                         </button>
                         <button
                             className="btn btn-primary btn-ghost"
-                            onClick={() => handlePrint()}
+                            onClick={async () => {
+                                await setIsPrinting(true);
+                                reactToPrintFn();
+                            }}
                             disabled={
                                 !firstname ||
                                 !lastname ||
@@ -294,69 +354,17 @@ const OfficeIdtemplate = () => {
                     className="flex items-center justify-center w-full h-full p-4 max-w-8/12 bg-stone-400/50"
                     id="print-area"
                 >
-                    {Array.from({ length: 2 }).map((_, i) => (
-                        <div
-                            style={{ width: "3.79in", height: "5.48in" }}
-                            className="relative overflow-hidden shadow bg-base-100"
-                        >
-                            <img
-                                src="/images/office_id_template.png"
-                                alt="id template"
-                                className="relative z-10 object-contain w-full h-full"
-                            />
-                            <img
-                                src={picturePreviewUrl}
-                                alt="pp"
-                                className="absolute z-[5] object-cover"
-                                style={{
-                                    right: pictureXAxis,
-                                    top: pictureYAxis,
-                                    width: pictureScale,
-                                }}
-                            />
-                            <div
-                                className="absolute z-20 font-semibold uppercase text-base-100"
-                                style={{
-                                    fontSize: firstnameFontsize,
-                                    right: firstnameXAxis,
-                                    top: firstnameYAxis,
-                                }}
-                            >
-                                {firstname}
-                            </div>
-                            <div
-                                className="absolute z-20 font-semibold uppercase text-base-100"
-                                style={{
-                                    fontSize: lastnameFontsize,
-                                    right: lastnameXAxis,
-                                    top: lastnameYAxis,
-                                }}
-                            >
-                                {lastname}
-                            </div>
-                            <div
-                                className="absolute z-20 font-serif text-neutral "
-                                style={{
-                                    fontSize: positionFontsize,
-                                    right: positionXAxis,
-                                    top: positionYAxis,
-                                }}
-                            >
-                                {position}
-                            </div>
-                            <div
-                                className="absolute z-20 leading-5 text-end text-base-100"
-                                style={{
-                                    fontSize: officeInputFontSize,
-                                    right: officeInputXAxis,
-                                    top: officeInputYAxis,
-                                }}
-                            >
-                                {officeInput}
-                            </div>
-                        </div>
-                    ))}
+                    {cardLayout}
                 </div>
+            </div>
+            <div
+                className={`${
+                    isPrinting ? "flex" : "hidden"
+                } absolute w-full justify-center pt-4`}
+                ref={contentRef}
+            >
+                {cardLayout}
+                {cardLayout}
             </div>
         </TemplateLayout>
     );
