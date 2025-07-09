@@ -151,7 +151,7 @@ const OfficeIdtemplate = () => {
                 {position}
             </div>
             <div
-                className="absolute z-20 leading-5 text-end text-base-100"
+                className="absolute z-20 leading-5 max-w-80 text-end text-base-100"
                 style={{
                     fontSize: officeInputFontSize,
                     right: officeInputXAxis,
@@ -166,8 +166,18 @@ const OfficeIdtemplate = () => {
     return (
         <TemplateLayout title="Office Id Template">
             <div className="flex h-[calc(100vh-64px)] items-center">
-                <div className="p-8 max-w-4/12">
-                    <div className="flex flex-col w-full gap-2 p-8 rounded-lg shadow-xl bg-base-100">
+                <div className="h-full p-8 overflow-auto max-w-4/12">
+                    <div className="flex flex-col w-full p-8 rounded-lg shadow-xl bg-base-100">
+                        <fieldset className="w-full fieldset">
+                            <legend className="fieldset-legend">Search</legend>
+                            <input
+                                type="text"
+                                className="w-full input"
+                                value={firstname}
+                                onChange={(e) => setFirstname(e.target.value)}
+                            />
+                        </fieldset>
+                        <div className="divider"></div>
                         <div className="flex gap-2">
                             <fieldset className="w-full fieldset">
                                 <legend className="fieldset-legend">
@@ -350,17 +360,14 @@ const OfficeIdtemplate = () => {
                     </div>
                 </div>
 
-                <div
-                    className="flex items-center justify-center w-full h-full p-4 max-w-8/12 bg-stone-400/50"
-                    id="print-area"
-                >
+                <div className="relative flex items-center justify-center w-full h-full p-4 max-w-8/12 bg-stone-400/50">
                     {cardLayout}
                 </div>
             </div>
             <div
                 className={`${
                     isPrinting ? "flex" : "hidden"
-                } absolute w-full justify-center pt-4`}
+                } absolute w-full justify-center `}
                 ref={contentRef}
             >
                 {cardLayout}

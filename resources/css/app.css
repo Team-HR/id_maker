@@ -7,11 +7,11 @@
     prefersdark: true;
     color-scheme: "dark";
     --color-base-100: oklch(98% 0 0);
-    --color-base-200: oklch(97% 0 0);
+    --color-base-200: oklch(92% 0.004 286.32);
     --color-base-300: oklch(92% 0 0);
     --color-base-content: oklch(20% 0 0);
-    --color-primary: oklch(83% 0.128 66.29);
-    --color-primary-content: oklch(26% 0.079 36.259);
+    --color-primary: oklch(59% 0.145 163.225);
+    --color-primary-content: oklch(95% 0.052 163.051);
     --color-secondary: oklch(78% 0.115 274.713);
     --color-secondary-content: oklch(25% 0.09 281.288);
     --color-accent: oklch(0% 0 0);
@@ -32,8 +32,8 @@
     --size-selector: 0.25rem;
     --size-field: 0.25rem;
     --border: 1px;
-    --depth: 0;
-    --noise: 0;
+    --depth: 1;
+    --noise: 1;
 }
 
 :root {

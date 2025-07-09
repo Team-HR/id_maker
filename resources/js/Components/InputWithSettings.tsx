@@ -37,7 +37,7 @@ const InputWithSettings = ({
                 <button
                     tabIndex={0}
                     role="button"
-                    className="btn btn-neutral"
+                    className="btn btn-primary"
                     disabled={disabled}
                 >
                     <Settings2 size={18} />
