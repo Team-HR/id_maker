@@ -6,6 +6,7 @@ import { router } from "@inertiajs/react";
 import { useReactToPrint } from "react-to-print";
 import { OfficeId } from "@/types/types";
 import axios from "axios";
+import { useToast } from "@/Context/ToastContext";
 
 const OfficeIdtemplate = () => {
     const [idToEdit, setIdToEdit] = useState<null | OfficeId>(null);
@@ -38,6 +39,7 @@ const OfficeIdtemplate = () => {
     const [pictureXAxis, setPictureXAxis] = useState(15);
     const [pictureYAxis, setPictureYAxis] = useState(100);
     const [pictureScale, setPictureScale] = useState(200);
+    const pictureInputRef = useRef<HTMLInputElement | null>(null);
 
     // FOR PRINTING HERE
     const [isPrinting, setIsPrinting] = useState(false);
@@ -46,8 +48,11 @@ const OfficeIdtemplate = () => {
         contentRef,
         onAfterPrint: () => {
             setIsPrinting(false);
+            handleSave();
         },
     });
+
+    const { showToast } = useToast();
 
     useEffect(() => {
         if (idToEdit) {
@@ -178,19 +183,17 @@ const OfficeIdtemplate = () => {
         }
 
         if (idToEdit) {
-            await axios.post(
-                route("office-id.patch", { id: idToEdit.id }),
-                formData,
-                {
+            await axios
+                .post(route("office-id.patch", { id: idToEdit.id }), formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
-                }
-            );
+                })
+                .then((res) => showToast("success", res.data.message));
         } else {
-            await router.post(route("office-id.save"), formData, {
-                forceFormData: true,
-            });
+            await axios
+                .post(route("office-id.save"), formData)
+                .then((res) => showToast("success", res.data.message));
         }
     };
 
@@ -214,13 +217,18 @@ const OfficeIdtemplate = () => {
         setOfficeInputXAxis(10);
         setOfficeInputYAxis(445);
         setOfficeInputFontSize(21);
-        setFilteredOffices(cityOffices); // Assuming `cityOffices` is your original source
+        setFilteredOffices(cityOffices);
 
         setPicture(null);
         setPicturePreviewUrl("");
         setPictureXAxis(15);
         setPictureYAxis(100);
         setPictureScale(200);
+        if (pictureInputRef.current) {
+            pictureInputRef.current.value = "";
+        }
+
+        setIdToEdit(null);
     };
 
     const cardLayout = (
@@ -402,6 +410,7 @@ const OfficeIdtemplate = () => {
                                             );
                                         }
                                     }}
+                                    ref={pictureInputRef}
                                 />
                             </InputWithSettings>
                         </fieldset>

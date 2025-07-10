@@ -20,6 +20,8 @@ class OfficeIdController extends Controller
             'picture' => $path,
             'configs' => json_encode($request->configs),
         ]);
+
+        return response()->json(['message' => 'Created Successfully']);
     }
 
     public function patch(Request $request, $id)
