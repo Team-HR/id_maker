@@ -1,4 +1,3 @@
-import { Settings2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
@@ -98,6 +97,35 @@ const OfficeIdtemplate = () => {
         await router.post(route("test.route", { data, picture }));
         console.log("Saved Data:", data);
         // You can now send this `data` object to an API, localStorage, etc.
+    };
+
+    const reset = () => {
+        setFirstname("");
+        setFirstnameXAxis(10);
+        setFirstnameYAxis(310);
+        setFirstnameFontsize(30);
+
+        setLastname("");
+        setLastnameXAxis(10);
+        setLastnameYAxis(340);
+        setLastnameFontsize(30);
+
+        setPosition("");
+        setPositionXAxis(10);
+        setPositionYAxis(385);
+        setPositionFontsize(20);
+
+        setOfficeInput("");
+        setOfficeInputXAxis(10);
+        setOfficeInputYAxis(445);
+        setOfficeInputFontSize(21);
+        setFilteredOffices(cityOffices); // Assuming `cityOffices` is your original source
+
+        setPicture(null);
+        setPicturePreviewUrl("");
+        setPictureXAxis(15);
+        setPictureYAxis(100);
+        setPictureScale(200);
     };
 
     const cardLayout = (
@@ -329,7 +357,7 @@ const OfficeIdtemplate = () => {
                         </fieldset>
                         <div className="divider"></div>
                         <button
-                            className="btn btn-primary"
+                            className="btn btn-sm btn-primary"
                             onClick={() => handleSave()}
                             disabled={
                                 !firstname ||
@@ -342,7 +370,7 @@ const OfficeIdtemplate = () => {
                             Save
                         </button>
                         <button
-                            className="btn btn-primary btn-ghost"
+                            className="btn btn-sm btn-primary btn-ghost"
                             onClick={async () => {
                                 await setIsPrinting(true);
                                 reactToPrintFn();
@@ -356,6 +384,12 @@ const OfficeIdtemplate = () => {
                             }
                         >
                             Print
+                        </button>
+                        <button
+                            className="btn btn-sm btn-primary btn-ghost"
+                            onClick={reset}
+                        >
+                            Reset
                         </button>
                     </div>
                 </div>
