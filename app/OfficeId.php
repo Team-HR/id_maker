@@ -13,6 +13,7 @@ class OfficeId extends Model
         'position',
         'department',
         'configs',
+        'status'
     ];
 
     protected $casts = [

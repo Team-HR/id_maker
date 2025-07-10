@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->string('department');
             $table->json('configs');
+            $table->enum('status',['active','inactive']);
             $table->timestamps();
         });
     }

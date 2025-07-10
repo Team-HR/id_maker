@@ -1,11 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
 import TemplateLayout from "@/Layouts/TemplateLayout";
 import { router } from "@inertiajs/react";
 import { useReactToPrint } from "react-to-print";
+import { OfficeId } from "@/types/types";
+import axios from "axios";
 
 const OfficeIdtemplate = () => {
+    const [idToEdit, setIdToEdit] = useState<null | OfficeId>(null);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResult, setSearchResult] = useState<OfficeId[]>([]);
+
     const [firstname, setFirstname] = useState("");
     const [firstnameXAxis, setFirstnameXAxis] = useState(10);
     const [firstnameYAxis, setFirstnameYAxis] = useState(310);
@@ -43,6 +49,77 @@ const OfficeIdtemplate = () => {
         },
     });
 
+    useEffect(() => {
+        if (idToEdit) {
+            setFirstname(idToEdit.firstname);
+            setLastname(idToEdit.lastname);
+            setPosition(idToEdit.position ?? "");
+            setOfficeInput(idToEdit.department);
+            setPicturePreviewUrl("storage/" + idToEdit?.picture);
+
+            // Parse configs
+            let configs;
+            try {
+                configs =
+                    typeof idToEdit.configs === "string"
+                        ? JSON.parse(idToEdit.configs)
+                        : idToEdit.configs;
+            } catch (error) {
+                console.error("Failed to parse configs:", error);
+                configs = {};
+            }
+
+            if (configs.firstname) {
+                setFirstnameXAxis(configs.firstname.xAxis);
+                setFirstnameYAxis(configs.firstname.yAxis);
+                setFirstnameFontsize(configs.firstname.fontSize);
+            }
+
+            if (configs.lastname) {
+                setLastnameXAxis(configs.lastname.xAxis);
+                setLastnameYAxis(configs.lastname.yAxis);
+                setLastnameFontsize(configs.lastname.fontSize);
+            }
+
+            if (configs.position) {
+                setPositionXAxis(configs.position.xAxis);
+                setPositionYAxis(configs.position.yAxis);
+                setPositionFontsize(configs.position.fontSize);
+            }
+
+            if (configs.department) {
+                setOfficeInputXAxis(configs.department.xAxis);
+                setOfficeInputYAxis(configs.department.yAxis);
+                setOfficeInputFontSize(configs.department.fontSize);
+            }
+
+            if (configs.picture) {
+                setPictureXAxis(configs.picture.xAxis);
+                setPictureYAxis(configs.picture.yAxis);
+                setPictureScale(configs.picture.scale);
+            }
+        }
+    }, [idToEdit]);
+
+    useEffect(() => {
+        if (searchQuery) {
+            handleSearch(searchQuery);
+        }
+    }, [searchQuery]);
+
+    const handleSearch = async (searchQuery: string) => {
+        await axios
+            .get(route("office-id.search"), {
+                params: {
+                    query: searchQuery,
+                },
+            })
+            .then((res) => {
+                setSearchResult(res.data);
+                console.log(res.data);
+            });
+    };
+
     const handleOfficeInputChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -63,25 +140,21 @@ const OfficeIdtemplate = () => {
     const handleSave = async () => {
         const data = {
             firstname: {
-                value: firstname,
                 xAxis: firstnameXAxis,
                 yAxis: firstnameYAxis,
                 fontSize: firstnameFontsize,
             },
             lastname: {
-                value: lastname,
                 xAxis: lastnameXAxis,
                 yAxis: lastnameYAxis,
                 fontSize: lastnameFontsize,
             },
             position: {
-                value: position,
                 xAxis: positionXAxis,
                 yAxis: positionYAxis,
                 fontSize: positionFontsize,
             },
             office: {
-                value: officeInput,
                 xAxis: officeInputXAxis,
                 yAxis: officeInputYAxis,
                 fontSize: officeInputFontSize,
@@ -90,13 +163,35 @@ const OfficeIdtemplate = () => {
                 scale: pictureScale,
                 xAxis: pictureXAxis,
                 yAxis: pictureYAxis,
-                file: picture,
             },
         };
 
-        await router.post(route("test.route", { data, picture }));
-        console.log("Saved Data:", data);
-        // You can now send this `data` object to an API, localStorage, etc.
+        const formData = new FormData();
+        formData.append("firstname", firstname);
+        formData.append("lastname", lastname);
+        formData.append("position", position);
+        formData.append("department", officeInput);
+        formData.append("configs", JSON.stringify(data));
+
+        if (picture) {
+            formData.append("picture", picture);
+        }
+
+        if (idToEdit) {
+            await axios.post(
+                route("office-id.patch", { id: idToEdit.id }),
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+        } else {
+            await router.post(route("office-id.save"), formData, {
+                forceFormData: true,
+            });
+        }
     };
 
     const reset = () => {
@@ -201,9 +296,35 @@ const OfficeIdtemplate = () => {
                             <input
                                 type="text"
                                 className="w-full input"
-                                value={firstname}
-                                onChange={(e) => setFirstname(e.target.value)}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
+                            {searchResult.length > 0 && (
+                                <div className="mt-1 overflow-x-auto border max-h-32 rounded-box border-base-content/5 bg-base-100">
+                                    <table className="table table-sm">
+                                        <tbody>
+                                            {searchResult.map(
+                                                (result, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className="cursor-pointer hover:bg-base-200"
+                                                        onClick={() => {
+                                                            setIdToEdit(result);
+                                                            setSearchResult([]);
+                                                        }}
+                                                    >
+                                                        <th>
+                                                            {result.firstname +
+                                                                " " +
+                                                                result.lastname}
+                                                        </th>
+                                                    </tr>
+                                                )
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </fieldset>
                         <div className="divider"></div>
                         <div className="flex gap-2">
@@ -357,17 +478,18 @@ const OfficeIdtemplate = () => {
                         </fieldset>
                         <div className="divider"></div>
                         <button
-                            className="btn btn-sm btn-primary"
+                            className={`btn btn-sm ${
+                                idToEdit ? "btn-secondary" : "btn-primary"
+                            }`}
                             onClick={() => handleSave()}
                             disabled={
                                 !firstname ||
                                 !lastname ||
-                                !picture ||
-                                !position ||
+                                !picturePreviewUrl ||
                                 !officeInput
                             }
                         >
-                            Save
+                            {idToEdit ? "Update" : "Save"}
                         </button>
                         <button
                             className="btn btn-sm btn-primary btn-ghost"
@@ -378,8 +500,7 @@ const OfficeIdtemplate = () => {
                             disabled={
                                 !firstname ||
                                 !lastname ||
-                                !picture ||
-                                !position ||
+                                !picturePreviewUrl ||
                                 !officeInput
                             }
                         >
