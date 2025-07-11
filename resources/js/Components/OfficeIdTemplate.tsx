@@ -63,7 +63,7 @@ const OfficeIdtemplate = () => {
             setPicturePreviewUrl("storage/" + idToEdit?.picture);
 
             // Parse configs
-            let configs;
+            let configs: OfficeId["configs"];
             try {
                 configs =
                     typeof idToEdit.configs === "string"
@@ -71,7 +71,7 @@ const OfficeIdtemplate = () => {
                         : idToEdit.configs;
             } catch (error) {
                 console.error("Failed to parse configs:", error);
-                configs = {};
+                configs = idToEdit.configs;
             }
 
             if (configs.firstname) {
@@ -159,7 +159,7 @@ const OfficeIdtemplate = () => {
                 yAxis: positionYAxis,
                 fontSize: positionFontsize,
             },
-            office: {
+            department: {
                 xAxis: officeInputXAxis,
                 yAxis: officeInputYAxis,
                 fontSize: officeInputFontSize,

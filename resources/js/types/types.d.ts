@@ -1,10 +1,10 @@
-export interface TextConfig {
+export interface FieldConfig {
     xAxis: number;
     yAxis: number;
     fontSize: number;
 }
 
-export interface ImageConfig {
+export interface PictureConfig {
     xAxis: number;
     yAxis: number;
     scale: number;
@@ -18,11 +18,11 @@ export interface OfficeId {
     position: string | null;
     department: string;
     configs: {
-        firstname: TextConfig;
-        lastname: TextConfig;
-        position?: TextConfig;
-        department: TextConfig;
-        picture: ImageConfig;
+        firstname: FieldConfig;
+        lastname: FieldConfig;
+        position?: FieldConfig;
+        department: FieldConfig;
+        picture: PictureConfig;
     };
     status: "active" | "inactive";
     created_at: string;
