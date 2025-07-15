@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OfficeId;
+use App\Models\OfficeId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
