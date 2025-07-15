@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
 import TemplateLayout from "@/Layouts/TemplateLayout";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { useReactToPrint } from "react-to-print";
 import { OfficeId } from "@/types/types";
 import axios from "axios";
 import { useToast } from "@/Context/ToastContext";
 
 const OfficeIdtemplate = () => {
+    const { user } = usePage().props.auth;
+
     const [idToEdit, setIdToEdit] = useState<null | OfficeId>(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResult, setSearchResult] = useState<OfficeId[]>([]);
@@ -32,7 +34,7 @@ const OfficeIdtemplate = () => {
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
     const [officeInputYAxis, setOfficeInputYAxis] = useState(445);
     const [officeInputFontSize, setOfficeInputFontSize] = useState(21);
-    const [filteredOffices, setFilteredOffices] = useState(cityOffices);
+    // const [filteredOffices, setFilteredOffices] = useState(cityOffices);
 
     const [picture, setPicture] = useState<File | null>(null);
     const [picturePreviewUrl, setPicturePreviewUrl] = useState<string>("");
@@ -86,12 +88,6 @@ const OfficeIdtemplate = () => {
                 setLastnameFontsize(configs.lastname.fontSize);
             }
 
-            if (configs.position) {
-                setPositionXAxis(configs.position.xAxis);
-                setPositionYAxis(configs.position.yAxis);
-                setPositionFontsize(configs.position.fontSize);
-            }
-
             if (configs.department) {
                 setOfficeInputXAxis(configs.department.xAxis);
                 setOfficeInputYAxis(configs.department.yAxis);
@@ -112,6 +108,23 @@ const OfficeIdtemplate = () => {
         }
     }, [searchQuery]);
 
+    useEffect(() => {
+        if (user) {
+            console.log("configs: ", user.configs);
+
+            setOfficeInputXAxis(
+                user.configs.office_id_template?.department?.xAxis ?? 10
+            );
+            setOfficeInputYAxis(
+                user.configs.office_id_template?.department?.yAxis ?? 445
+            );
+            setOfficeInputFontSize(
+                user.configs.office_id_template?.department?.fontSize ?? 21
+            );
+            setOfficeInput(user.department);
+        }
+    }, [user]);
+
     const handleSearch = async (searchQuery: string) => {
         await axios
             .get(route("office-id.search"), {
@@ -125,22 +138,22 @@ const OfficeIdtemplate = () => {
             });
     };
 
-    const handleOfficeInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const value = e.target.value;
-        setOfficeInput(value);
+    // const handleOfficeInputChange = (
+    //     e: React.ChangeEvent<HTMLInputElement>
+    // ) => {
+    //     const value = e.target.value;
+    //     setOfficeInput(value);
 
-        const filtered = cityOffices.filter((office) =>
-            office.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredOffices(filtered);
-    };
+    //     const filtered = cityOffices.filter((office) =>
+    //         office.toLowerCase().includes(value.toLowerCase())
+    //     );
+    //     setFilteredOffices(filtered);
+    // };
 
-    const handleOfficeClick = (office: string) => {
-        setOfficeInput(office);
-        setFilteredOffices([]); // optionally hide suggestions after selection
-    };
+    // const handleOfficeClick = (office: string) => {
+    //     setOfficeInput(office);
+    //     setFilteredOffices([]); // optionally hide suggestions after selection
+    // };
 
     const handleSave = async () => {
         const data = {
@@ -189,11 +202,14 @@ const OfficeIdtemplate = () => {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then((res) => showToast("success", res.data.message));
+                .then((res) => {
+                    showToast("success", res.data.message);
+                });
         } else {
-            await axios
-                .post(route("office-id.save"), formData)
-                .then((res) => showToast("success", res.data.message));
+            await axios.post(route("office-id.save"), formData).then((res) => {
+                showToast("success", res.data.message);
+                setIdToEdit(res.data.officeId);
+            });
         }
     };
 
@@ -214,10 +230,16 @@ const OfficeIdtemplate = () => {
         setPositionFontsize(20);
 
         setOfficeInput("");
-        setOfficeInputXAxis(10);
-        setOfficeInputYAxis(445);
-        setOfficeInputFontSize(21);
-        setFilteredOffices(cityOffices);
+        setOfficeInputXAxis(
+            user.configs.office_id_template?.department?.xAxis ?? 10
+        );
+        setOfficeInputYAxis(
+            user.configs.office_id_template?.department?.yAxis ?? 445
+        );
+        setOfficeInputFontSize(
+            user.configs.office_id_template?.department?.fontSize ?? 21
+        );
+        // setFilteredOffices(cityOffices);
 
         setPicture(null);
         setPicturePreviewUrl("");
@@ -289,7 +311,7 @@ const OfficeIdtemplate = () => {
                     top: officeInputYAxis,
                 }}
             >
-                {officeInput}
+                {user.department}
             </div>
         </div>
     );
@@ -456,11 +478,14 @@ const OfficeIdtemplate = () => {
                                     type="text"
                                     className="w-full input"
                                     value={officeInput}
-                                    onChange={handleOfficeInputChange}
-                                    placeholder="Search or select an office"
+                                    // onChange={handleOfficeInputChange}
+                                    onChange={(e) =>
+                                        setOfficeInput(e.target.value)
+                                    }
+                                    disabled
                                 />
                             </InputWithSettings>
-                            {officeInput.trim() !== "" &&
+                            {/* {officeInput.trim() !== "" &&
                                 filteredOffices.length > 0 && (
                                     <div className="mt-1 overflow-x-auto border max-h-32 rounded-box border-base-content/5 bg-base-100">
                                         <table className="table table-sm">
@@ -483,7 +508,7 @@ const OfficeIdtemplate = () => {
                                             </tbody>
                                         </table>
                                     </div>
-                                )}
+                                )} */}
                         </fieldset>
                         <div className="divider"></div>
                         <button

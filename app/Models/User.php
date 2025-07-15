@@ -13,6 +13,7 @@ class User extends Authenticatable
         'department',
         'username',
         'password',
+        'configs',
         'status',
     ];
 
@@ -23,5 +24,6 @@ class User extends Authenticatable
 
     protected $casts = [
         'status' => 'string',
+        'configs' => 'array'
     ];
 }

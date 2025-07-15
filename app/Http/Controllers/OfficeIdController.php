@@ -12,7 +12,7 @@ class OfficeIdController extends Controller
         $picture = $request->file('picture');
         $path = $picture->store('IdPictures', 'public');
 
-        OfficeId::create([
+        $officeId = OfficeId::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'position' => $request->position,
@@ -21,7 +21,7 @@ class OfficeIdController extends Controller
             'configs' => json_encode($request->configs),
         ]);
 
-        return response()->json(['message' => 'Created Successfully']);
+        return response()->json(['message' => 'Created Successfully', 'officeId' => $officeId]);
     }
 
     public function patch(Request $request, $id)

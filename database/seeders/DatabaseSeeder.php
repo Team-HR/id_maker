@@ -16,52 +16,53 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $departments = [
-            "City Accounting Office" => "cao",
-            "City Administrator's Office" => "cadmin",
-            "City Administrator's Office - Bids & Awards Committee Section" => "cadmin_bac",
-            "City Administrator's Office - Culture, Arts, Investment Promotion & Tourism Office" => "ctourism",
-            "City Agriculture Office" => "cagri",
-            "City Assessor's Office" => "cassess",
-            "City Budget Office" => "cbudget",
-            "City Civil Registry Office" => "ccivilreg",
-            "City Cooperative and Manpower Development Office" => "ccoopmd",
-            "City Engineering Office" => "ceng",
-            "City Environment & Natural Resources Office" => "cenro",
-            "City General Services Office" => "cgenserv",
-            "City Health Office" => "chealth",
-            "City Legal Office" => "clegal",
-            "City Mayor's Office" => "cmayor",
-            "City Planning and Development Office" => "cplan",
-            "City Public Safety Office" => "csafety",
-            "City Social Welfare & Development Office" => "cswdo",
-            "City Treasurer's Office" => "ctreas",
-            "City Veterinary Office" => "cveto",
-            "City Vice-Mayor's Office" => "cvmo",
-            "DepEd/Bayawan East Central School" => "deped_eastcs",
-            "DepEd/Bayawan National High School" => "deped_bnchs",
-            "Office of the Human Resource Management and Dev't" => "hrmdo",
-            "Internal Audit Services Section" => "ias",
-            "Information Technology Office" => "ito",
-            "Local Disaster and Risk Reduction Management Office" => "ldrrmo",
-            "Media Bureau" => "media",
-            "National Agencies" => "nat_agency",
-            "Office of the Secretary to the Sangguniang Panglungsod" => "sp_sec",
-            "Public Market & Slaughterhouse" => "pmarket_sh",
-            "Sangguniang Panglungsod" => "sp",
+            ["department" => "City Accounting Office", "username" => "cao", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Administrator's Office", "username" => "cadmin", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Administrator's Office - Bids & Awards Committee Section", "username" => "cadmin_bac", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 20]]]],
+            ["department" => "City Administrator's Office - Culture, Arts, Investment Promotion & Tourism Office", "username" => "ctourism", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 430, "fontSize" => 17]]]],
+            ["department" => "City Agriculture Office", "username" => "cagri", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Assessor's Office", "username" => "cassess", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Budget Office", "username" => "cbudget", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Civil Registry Office", "username" => "ccivilreg", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Cooperative and Manpower Development Office", "username" => "ccoopmd", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Engineering Office", "username" => "ceng", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Environment & Natural Resources Office", "username" => "cenro", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City General Services Office", "username" => "cgenserv", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Health Office", "username" => "chealth", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Legal Office", "username" => "clegal", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Mayor's Office", "username" => "cmayor", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Planning and Development Office", "username" => "cplan", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Public Safety Office", "username" => "csafety", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Social Welfare & Development Office", "username" => "cswdo", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Treasurer's Office", "username" => "ctreas", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Veterinary Office", "username" => "cveto", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City Vice-Mayor's Office", "username" => "cvmo", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "DepEd/Bayawan East Central School", "username" => "deped_eastcs", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "DepEd/Bayawan National High School", "username" => "deped_bnchs", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Office of the Human Resource Management and Dev't", "username" => "hrmdo", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Internal Audit Services Section", "username" => "ias", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Information Technology Office", "username" => "ito", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Local Disaster and Risk Reduction Management Office", "username" => "ldrrmo", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Media Bureau", "username" => "media", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "National Agencies", "username" => "nat_agency", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Office of the Secretary to the Sangguniang Panglungsod", "username" => "sp_sec", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 20]]]],
+            ["department" => "Public Market & Slaughterhouse", "username" => "pmarket_sh", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "Sangguniang Panglungsod", "username" => "sp", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
         ];
 
-        foreach ($departments as $department => $username) {
+        foreach ($departments as $department) {
             $plainPassword = Str::random(8);
 
             User::create([
-                'department' => $department,    
-                'username' => $username,
+                'department' => $department['department'],    
+                'username' => $department['username'],
                 'password' => Hash::make($plainPassword),
+                'configs' => $department['configs'],
                 'status' => 'active',
             ]);
 
             // dd("Username: {$username} | Password: {$plainPassword} | Department: {$department}");
-            $this->command->info("Username: {$username} | Password: {$plainPassword} | Department: {$department}");
+            $this->command->info("Username: {$department['username']} | Password: {$plainPassword} | Department: {$department['department']}");
         }
     }
 }
