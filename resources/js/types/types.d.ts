@@ -12,6 +12,7 @@ export interface PictureConfig {
 
 export interface OfficeId {
     id: number;
+    user_id: number;
     firstname: string;
     lastname: string;
     picture: string;

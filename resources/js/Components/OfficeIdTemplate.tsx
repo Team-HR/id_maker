@@ -8,7 +8,7 @@ import { OfficeId } from "@/types/types";
 import axios from "axios";
 import { useToast } from "@/Context/ToastContext";
 
-const OfficeIdtemplate = () => {
+const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const { user } = usePage().props.auth;
 
     const [idToEdit, setIdToEdit] = useState<null | OfficeId>(null);
@@ -43,7 +43,11 @@ const OfficeIdtemplate = () => {
     const [pictureScale, setPictureScale] = useState(200);
     const pictureInputRef = useRef<HTMLInputElement | null>(null);
 
+    // OFFICE IDS FROM PROPS
+    const [officeIds, setOfficeIds] = useState<OfficeId[]>(office_ids ?? []);
+
     // FOR PRINTING HERE
+    const [officeIdsToPrint, setOfficeIdsToPrint] = useState<OfficeId[]>([]);
     const [isPrinting, setIsPrinting] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
     const reactToPrintFn = useReactToPrint({
@@ -138,6 +142,21 @@ const OfficeIdtemplate = () => {
             });
     };
 
+    const handleIdSelection = (officeId: OfficeId) => {
+        setOfficeIdsToPrint((prevIds) => {
+            // Check if the ID already exists
+            const exists = prevIds.some((id) => id.id === officeId.id);
+
+            if (exists) {
+                // Remove the ID if it exists
+                return prevIds.filter((id) => id.id !== officeId.id);
+            } else {
+                // Add the ID if it doesn't exist
+                return [...prevIds, officeId];
+            }
+        });
+    };
+
     // const handleOfficeInputChange = (
     //     e: React.ChangeEvent<HTMLInputElement>
     // ) => {
@@ -209,6 +228,7 @@ const OfficeIdtemplate = () => {
             await axios.post(route("office-id.save"), formData).then((res) => {
                 showToast("success", res.data.message);
                 setIdToEdit(res.data.officeId);
+                setOfficeIds((prevIds) => [...prevIds, res.data.officeId]);
             });
         }
     };
@@ -229,7 +249,7 @@ const OfficeIdtemplate = () => {
         setPositionYAxis(385);
         setPositionFontsize(20);
 
-        setOfficeInput("");
+        // setOfficeInput("");
         setOfficeInputXAxis(
             user.configs.office_id_template?.department?.xAxis ?? 10
         );
@@ -321,42 +341,6 @@ const OfficeIdtemplate = () => {
             <div className="flex h-[calc(100vh-64px)] items-center">
                 <div className="h-full p-8 overflow-auto max-w-4/12">
                     <div className="flex flex-col w-full p-8 rounded-lg shadow-xl bg-base-100">
-                        <fieldset className="w-full fieldset">
-                            <legend className="fieldset-legend">Search</legend>
-                            <input
-                                type="text"
-                                className="w-full input"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            {searchResult.length > 0 && (
-                                <div className="mt-1 overflow-x-auto border max-h-32 rounded-box border-base-content/5 bg-base-100">
-                                    <table className="table table-sm">
-                                        <tbody>
-                                            {searchResult.map(
-                                                (result, index) => (
-                                                    <tr
-                                                        key={index}
-                                                        className="cursor-pointer hover:bg-base-200"
-                                                        onClick={() => {
-                                                            setIdToEdit(result);
-                                                            setSearchResult([]);
-                                                        }}
-                                                    >
-                                                        <th>
-                                                            {result.firstname +
-                                                                " " +
-                                                                result.lastname}
-                                                        </th>
-                                                    </tr>
-                                                )
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </fieldset>
-                        <div className="divider"></div>
                         <div className="flex gap-2">
                             <fieldset className="w-full fieldset">
                                 <legend className="fieldset-legend">
@@ -549,8 +533,119 @@ const OfficeIdtemplate = () => {
                     </div>
                 </div>
 
-                <div className="relative flex items-center justify-center w-full h-full p-4 max-w-8/12 bg-stone-400/50">
+                <div className="relative flex items-center justify-center w-full h-full p-4 max-w-4/12 bg-stone-400/50">
                     {cardLayout}
+                </div>
+                <div className="relative flex justify-center w-full h-full p-8 max-w-4/12">
+                    <div className="flex flex-col w-full p-8 rounded-lg shadow-xl bg-base-100">
+                        <fieldset className="w-full fieldset">
+                            <legend className="fieldset-legend">Search</legend>
+                            <input
+                                type="text"
+                                className="w-full input"
+                                // value={searchQuery}
+                                // onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <div className="overflow-auto max-h-52 rounded-box border border-base-content/5 bg-base-100">
+                                <table className="table table-sm border border-base-content/5">
+                                    <tbody>
+                                        {officeIds.map((office_id, index) => (
+                                            <tr
+                                                key={index}
+                                                className="cursor-pointer hover:bg-base-200"
+                                            >
+                                                <th>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="checkbox"
+                                                        checked={officeIdsToPrint.some(
+                                                            (id) =>
+                                                                id.id ===
+                                                                office_id.id
+                                                        )}
+                                                        onClick={() => {
+                                                            handleIdSelection(
+                                                                office_id
+                                                            );
+                                                        }}
+                                                    />
+                                                </th>
+                                                <th className="uppercase">
+                                                    {office_id.firstname +
+                                                        " " +
+                                                        office_id.lastname}
+                                                </th>
+                                                <th className="uppercase">
+                                                    <button
+                                                        className="btn btn-primary btn-sm"
+                                                        onClick={() =>
+                                                            setIdToEdit(
+                                                                office_id
+                                                            )
+                                                        }
+                                                    >
+                                                        View
+                                                    </button>
+                                                </th>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+
+                        <div className="overflow-auto max-h-52 rounded-box border border-base-content/5 bg-base-300 mt-4">
+                            <table className="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Selected for printing</th>
+                                        <th className="text-end">
+                                            <button className="btn btn-primary btn-sm">
+                                                Print all
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {officeIdsToPrint.length === 0 && (
+                                        <tr>
+                                            <th className="text-base-content/50 text-xs text-center">
+                                                None selected
+                                            </th>
+                                        </tr>
+                                    )}
+                                    {officeIdsToPrint.map(
+                                        (office_id: OfficeId, index) => (
+                                            <tr
+                                                key={index}
+                                                className="cursor-pointer hover:bg-base-200"
+                                                onClick={() =>
+                                                    handleIdSelection(office_id)
+                                                }
+                                            >
+                                                <th>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="checkbox"
+                                                        checked={officeIdsToPrint.some(
+                                                            (id) =>
+                                                                id.id ===
+                                                                office_id.id
+                                                        )}
+                                                    />
+                                                </th>
+                                                <th className="uppercase">
+                                                    {office_id.firstname +
+                                                        " " +
+                                                        office_id.lastname}
+                                                </th>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div

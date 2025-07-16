@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OfficeId extends Model
 {
     protected $fillable = [
+        'user_id',
         'firstname',
         'lastname',
         'picture',

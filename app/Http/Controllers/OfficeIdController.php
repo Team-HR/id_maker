@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficeId;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class OfficeIdController extends Controller
@@ -13,6 +14,7 @@ class OfficeIdController extends Controller
         $path = $picture->store('IdPictures', 'public');
 
         $officeId = OfficeId::create([
+            'user_id' => Auth::user()->id,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'position' => $request->position,
