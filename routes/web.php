@@ -39,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/office-id/search', [OfficeIdController::class, 'search_office_id'])->name('office-id.search');
 
     
+    Route::get('/settings', function () {
+        return Inertia::render('Settings');
+    })->name('settings');
+
     Route::get('/logout', function (Request $request) {
         Auth::logout(); // Logs the user out
 

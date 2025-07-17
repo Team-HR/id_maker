@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
 import { cityOffices } from "@/utils";
-import TemplateLayout from "@/Layouts/TemplateLayout";
 import { router, usePage } from "@inertiajs/react";
 import { useReactToPrint } from "react-to-print";
 import { OfficeId } from "@/types/types";
 import axios from "axios";
 import { useToast } from "@/Context/ToastContext";
 import CardLayout from "./CardLayout";
+import WithNavbarLayout from "@/Layouts/WithNavbarLayout";
 
 const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const { user } = usePage().props.auth;
@@ -193,6 +193,14 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 })
                 .then((res) => {
                     showToast("success", res.data.message);
+
+                    const arrayWithUpdatedDataRemoved = officeIds.filter(
+                        (id) => id.id !== res.data.officeId.id
+                    );
+                    setOfficeIds([
+                        ...arrayWithUpdatedDataRemoved,
+                        res.data.officeId,
+                    ]);
                 });
         } else {
             await axios.post(route("office-id.save"), formData).then((res) => {
@@ -243,7 +251,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     };
 
     return (
-        <TemplateLayout title="Office Id Template">
+        <WithNavbarLayout title="Office Id Template">
             <div className="flex h-[calc(100vh-64px)] items-center">
                 <div className="h-full p-8 overflow-auto max-w-4/12">
                     <div className="flex flex-col w-full p-8 rounded-lg shadow-xl bg-base-100">
@@ -307,7 +315,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                 setYAxis={setPictureYAxis}
                                 scale={pictureScale}
                                 setScale={setPictureScale}
-                                disabled={!picture}
+                                disabled={!picturePreviewUrl}
                             >
                                 <input
                                     type="file"
@@ -503,11 +511,11 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                           <th className="uppercase">
                                                               <button
                                                                   className="btn btn-primary btn-sm"
-                                                                  onClick={() =>
+                                                                  onClick={() => {
                                                                       setIdToEdit(
                                                                           office_id
-                                                                      )
-                                                                  }
+                                                                      );
+                                                                  }}
                                                               >
                                                                   View
                                                               </button>
@@ -593,7 +601,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                     }}
                 />
             </div>
-        </TemplateLayout>
+        </WithNavbarLayout>
     );
 };
 

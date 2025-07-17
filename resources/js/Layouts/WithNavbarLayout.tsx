@@ -2,7 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { ChevronDown, LogOut, Settings, Settings2 } from "lucide-react";
 import React, { ReactNode } from "react";
 
-const TemplateLayout = ({
+const WithNavbarLayout = ({
     children,
     title,
     className,
@@ -16,9 +16,12 @@ const TemplateLayout = ({
     return (
         <div>
             <div className="shadow-sm navbar bg-base-100 justify-between">
-                <a className="font-bold btn btn-ghost uppercase text-sm">
+                <Link
+                    href={route("dashboard")}
+                    className="font-bold btn btn-ghost uppercase text-sm"
+                >
                     {title}
-                </a>
+                </Link>
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn m-1">
                         {user.username} <ChevronDown size={14} />
@@ -28,9 +31,12 @@ const TemplateLayout = ({
                         className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
                     >
                         <li>
-                            <a className="font-bold gap-4">
+                            <Link
+                                href={route("settings")}
+                                className="font-bold gap-4"
+                            >
                                 <Settings size={18} /> Settings
-                            </a>
+                            </Link>
                         </li>
 
                         <li>
@@ -75,4 +81,4 @@ const TemplateLayout = ({
     );
 };
 
-export default TemplateLayout;
+export default WithNavbarLayout;
