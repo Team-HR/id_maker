@@ -50,7 +50,7 @@ class OfficeIdController extends Controller
 
         $officeId->save();
 
-        return response()->json(['message' => 'Updated Successfully']);
+         return response()->json(['message' => 'Created Successfully', 'officeId' => $officeId]);
     }
 
 
