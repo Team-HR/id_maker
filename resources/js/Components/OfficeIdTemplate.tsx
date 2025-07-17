@@ -7,6 +7,7 @@ import { useReactToPrint } from "react-to-print";
 import { OfficeId } from "@/types/types";
 import axios from "axios";
 import { useToast } from "@/Context/ToastContext";
+import CardLayout from "./CardLayout";
 
 const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const { user } = usePage().props.auth;
@@ -34,7 +35,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
     const [officeInputYAxis, setOfficeInputYAxis] = useState(445);
     const [officeInputFontSize, setOfficeInputFontSize] = useState(21);
-    // const [filteredOffices, setFilteredOffices] = useState(cityOffices);
 
     const [picture, setPicture] = useState<File | null>(null);
     const [picturePreviewUrl, setPicturePreviewUrl] = useState<string>("");
@@ -45,10 +45,11 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
     // OFFICE IDS FROM PROPS
     const [officeIds, setOfficeIds] = useState<OfficeId[]>(office_ids ?? []);
+    const [filteredOfficeIds, setFilteredOfficeIds] = useState<OfficeId[]>([]);
 
     // FOR PRINTING HERE
-    const [officeIdsToPrint, setOfficeIdsToPrint] = useState<OfficeId[]>([]);
     const [isPrinting, setIsPrinting] = useState(false);
+
     const contentRef = useRef<HTMLDivElement>(null);
     const reactToPrintFn = useReactToPrint({
         contentRef,
@@ -107,15 +108,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     }, [idToEdit]);
 
     useEffect(() => {
-        if (searchQuery) {
-            handleSearch(searchQuery);
-        }
-    }, [searchQuery]);
-
-    useEffect(() => {
         if (user) {
-            console.log("configs: ", user.configs);
-
             setOfficeInputXAxis(
                 user.configs.office_id_template?.department?.xAxis ?? 10
             );
@@ -129,50 +122,27 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         }
     }, [user]);
 
-    const handleSearch = async (searchQuery: string) => {
-        await axios
-            .get(route("office-id.search"), {
-                params: {
-                    query: searchQuery,
-                },
-            })
-            .then((res) => {
-                setSearchResult(res.data);
-                console.log(res.data);
-            });
-    };
+    useEffect(() => {
+        if (searchQuery) {
+            handleSearchFiltering(searchQuery);
+        }
+    }, [searchQuery]);
 
-    const handleIdSelection = (officeId: OfficeId) => {
-        setOfficeIdsToPrint((prevIds) => {
-            // Check if the ID already exists
-            const exists = prevIds.some((id) => id.id === officeId.id);
+    const handleSearchFiltering = (searchQuery: string) => {
+        const normalizedQuery = searchQuery.trim().toLowerCase();
 
-            if (exists) {
-                // Remove the ID if it exists
-                return prevIds.filter((id) => id.id !== officeId.id);
-            } else {
-                // Add the ID if it doesn't exist
-                return [...prevIds, officeId];
-            }
+        const filteredRecords = office_ids.filter((record) => {
+            const first = record.firstname.toLowerCase();
+            const last = record.lastname.toLowerCase();
+
+            return (
+                first.includes(normalizedQuery) ||
+                last.includes(normalizedQuery)
+            );
         });
+
+        setFilteredOfficeIds(filteredRecords);
     };
-
-    // const handleOfficeInputChange = (
-    //     e: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //     const value = e.target.value;
-    //     setOfficeInput(value);
-
-    //     const filtered = cityOffices.filter((office) =>
-    //         office.toLowerCase().includes(value.toLowerCase())
-    //     );
-    //     setFilteredOffices(filtered);
-    // };
-
-    // const handleOfficeClick = (office: string) => {
-    //     setOfficeInput(office);
-    //     setFilteredOffices([]); // optionally hide suggestions after selection
-    // };
 
     const handleSave = async () => {
         const data = {
@@ -249,7 +219,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         setPositionYAxis(385);
         setPositionFontsize(20);
 
-        // setOfficeInput("");
+        setOfficeInput(user.department ?? "");
         setOfficeInputXAxis(
             user.configs.office_id_template?.department?.xAxis ?? 10
         );
@@ -259,7 +229,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         setOfficeInputFontSize(
             user.configs.office_id_template?.department?.fontSize ?? 21
         );
-        // setFilteredOffices(cityOffices);
 
         setPicture(null);
         setPicturePreviewUrl("");
@@ -272,69 +241,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
         setIdToEdit(null);
     };
-
-    const cardLayout = (
-        <div
-            style={{ width: "3.79in", height: "5.48in" }}
-            className="relative overflow-hidden shadow bg-base-100"
-        >
-            <img
-                src="/images/office_id_template.png"
-                alt="id template"
-                className="relative z-10 object-contain w-full h-full"
-            />
-            <img
-                src={picturePreviewUrl}
-                alt="pp"
-                className="absolute z-[5] object-cover"
-                style={{
-                    right: pictureXAxis,
-                    top: pictureYAxis,
-                    width: pictureScale,
-                }}
-            />
-            <div
-                className="absolute z-20 font-semibold uppercase text-base-100"
-                style={{
-                    fontSize: firstnameFontsize,
-                    right: firstnameXAxis,
-                    top: firstnameYAxis,
-                }}
-            >
-                {firstname}
-            </div>
-            <div
-                className="absolute z-20 font-semibold uppercase text-base-100"
-                style={{
-                    fontSize: lastnameFontsize,
-                    right: lastnameXAxis,
-                    top: lastnameYAxis,
-                }}
-            >
-                {lastname}
-            </div>
-            <div
-                className="absolute z-20 font-serif text-neutral"
-                style={{
-                    fontSize: positionFontsize,
-                    right: positionXAxis,
-                    top: positionYAxis,
-                }}
-            >
-                {position}
-            </div>
-            <div
-                className="absolute z-20 leading-5 max-w-80 text-end text-base-100"
-                style={{
-                    fontSize: officeInputFontSize,
-                    right: officeInputXAxis,
-                    top: officeInputYAxis,
-                }}
-            >
-                {user.department}
-            </div>
-        </div>
-    );
 
     return (
         <TemplateLayout title="Office Id Template">
@@ -469,30 +375,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     disabled
                                 />
                             </InputWithSettings>
-                            {/* {officeInput.trim() !== "" &&
-                                filteredOffices.length > 0 && (
-                                    <div className="mt-1 overflow-x-auto border max-h-32 rounded-box border-base-content/5 bg-base-100">
-                                        <table className="table table-sm">
-                                            <tbody>
-                                                {filteredOffices.map(
-                                                    (office, index) => (
-                                                        <tr
-                                                            key={index}
-                                                            className="cursor-pointer hover:bg-base-200"
-                                                            onClick={() =>
-                                                                handleOfficeClick(
-                                                                    office
-                                                                )
-                                                            }
-                                                        >
-                                                            <th>{office}</th>
-                                                        </tr>
-                                                    )
-                                                )}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )} */}
                         </fieldset>
                         <div className="divider"></div>
                         <button
@@ -534,128 +416,182 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 </div>
 
                 <div className="relative flex items-center justify-center w-full h-full p-4 max-w-4/12 bg-stone-400/50">
-                    {cardLayout}
+                    <CardLayout
+                        firstname={firstname}
+                        firstnameConfig={{
+                            xAxis: firstnameXAxis,
+                            yAxis: firstnameYAxis,
+                            fontSize: firstnameFontsize,
+                        }}
+                        lastname={lastname}
+                        lastnameConfig={{
+                            xAxis: lastnameXAxis,
+                            yAxis: lastnameYAxis,
+                            fontSize: lastnameFontsize,
+                        }}
+                        position={position}
+                        positionConfig={{
+                            xAxis: positionXAxis,
+                            yAxis: positionYAxis,
+                            fontSize: positionFontsize,
+                        }}
+                        department={user.department}
+                        departmentConfig={{
+                            xAxis: officeInputXAxis,
+                            yAxis: officeInputYAxis,
+                            fontSize: officeInputFontSize,
+                        }}
+                        picturePreviewUrl={picturePreviewUrl}
+                        picturePreviewConfig={{
+                            xAxis: pictureXAxis,
+                            yAxis: pictureYAxis,
+                            scale: pictureScale,
+                        }}
+                    />
                 </div>
-                <div className="relative flex justify-center w-full h-full p-8 max-w-4/12">
-                    <div className="flex flex-col w-full p-8 rounded-lg shadow-xl bg-base-100">
+                <div className="max-w-4/12 w-full p-8 h-full">
+                    <div className="bg-base-100 p-8 shadow-lg">
                         <fieldset className="w-full fieldset">
                             <legend className="fieldset-legend">Search</legend>
                             <input
                                 type="text"
                                 className="w-full input"
-                                // value={searchQuery}
-                                // onChange={(e) => setSearchQuery(e.target.value)}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <div className="overflow-auto max-h-52 rounded-box border border-base-content/5 bg-base-100">
+                            <div className="overflow-auto max-h-96 rounded-box border border-base-content/5 bg-base-200">
                                 <table className="table table-sm border border-base-content/5">
                                     <tbody>
-                                        {officeIds.map((office_id, index) => (
-                                            <tr
-                                                key={index}
-                                                className="cursor-pointer hover:bg-base-200"
-                                            >
-                                                <th>
-                                                    <input
-                                                        type="checkbox"
-                                                        className="checkbox"
-                                                        checked={officeIdsToPrint.some(
-                                                            (id) =>
-                                                                id.id ===
-                                                                office_id.id
-                                                        )}
-                                                        onClick={() => {
-                                                            handleIdSelection(
-                                                                office_id
-                                                            );
-                                                        }}
-                                                    />
-                                                </th>
-                                                <th className="uppercase">
-                                                    {office_id.firstname +
-                                                        " " +
-                                                        office_id.lastname}
-                                                </th>
-                                                <th className="uppercase">
-                                                    <button
-                                                        className="btn btn-primary btn-sm"
-                                                        onClick={() =>
-                                                            setIdToEdit(
-                                                                office_id
-                                                            )
-                                                        }
-                                                    >
-                                                        View
-                                                    </button>
-                                                </th>
-                                            </tr>
-                                        ))}
+                                        {searchQuery === ""
+                                            ? officeIds.map(
+                                                  (office_id, index) => (
+                                                      <tr
+                                                          key={index}
+                                                          className="cursor-pointer hover:bg-base-200"
+                                                      >
+                                                          <th className="uppercase">
+                                                              {office_id.firstname +
+                                                                  " " +
+                                                                  office_id.lastname}
+                                                          </th>
+                                                          <th className="uppercase">
+                                                              <button
+                                                                  className="btn btn-primary btn-sm"
+                                                                  onClick={() =>
+                                                                      setIdToEdit(
+                                                                          office_id
+                                                                      )
+                                                                  }
+                                                              >
+                                                                  View
+                                                              </button>
+                                                          </th>
+                                                      </tr>
+                                                  )
+                                              )
+                                            : filteredOfficeIds.map(
+                                                  (office_id, index) => (
+                                                      <tr
+                                                          key={index}
+                                                          className="cursor-pointer hover:bg-base-200"
+                                                      >
+                                                          <th className="uppercase">
+                                                              {office_id.firstname +
+                                                                  " " +
+                                                                  office_id.lastname}
+                                                          </th>
+                                                          <th className="uppercase">
+                                                              <button
+                                                                  className="btn btn-primary btn-sm"
+                                                                  onClick={() =>
+                                                                      setIdToEdit(
+                                                                          office_id
+                                                                      )
+                                                                  }
+                                                              >
+                                                                  View
+                                                              </button>
+                                                          </th>
+                                                      </tr>
+                                                  )
+                                              )}
                                     </tbody>
                                 </table>
                             </div>
                         </fieldset>
-
-                        <div className="overflow-auto max-h-52 rounded-box border border-base-content/5 bg-base-300 mt-4">
-                            <table className="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Selected for printing</th>
-                                        <th className="text-end">
-                                            <button className="btn btn-primary btn-sm">
-                                                Print all
-                                            </button>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {officeIdsToPrint.length === 0 && (
-                                        <tr>
-                                            <th className="text-base-content/50 text-xs text-center">
-                                                None selected
-                                            </th>
-                                        </tr>
-                                    )}
-                                    {officeIdsToPrint.map(
-                                        (office_id: OfficeId, index) => (
-                                            <tr
-                                                key={index}
-                                                className="cursor-pointer hover:bg-base-200"
-                                                onClick={() =>
-                                                    handleIdSelection(office_id)
-                                                }
-                                            >
-                                                <th>
-                                                    <input
-                                                        type="checkbox"
-                                                        className="checkbox"
-                                                        checked={officeIdsToPrint.some(
-                                                            (id) =>
-                                                                id.id ===
-                                                                office_id.id
-                                                        )}
-                                                    />
-                                                </th>
-                                                <th className="uppercase">
-                                                    {office_id.firstname +
-                                                        " " +
-                                                        office_id.lastname}
-                                                </th>
-                                            </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
             <div
                 className={`${
                     isPrinting ? "flex" : "hidden"
-                } absolute w-full justify-center `}
+                } absolute w-full justify-center`}
                 ref={contentRef}
             >
-                {cardLayout}
-                {cardLayout}
+                <CardLayout
+                    firstname={firstname}
+                    firstnameConfig={{
+                        xAxis: firstnameXAxis,
+                        yAxis: firstnameYAxis,
+                        fontSize: firstnameFontsize,
+                    }}
+                    lastname={lastname}
+                    lastnameConfig={{
+                        xAxis: lastnameXAxis,
+                        yAxis: lastnameYAxis,
+                        fontSize: lastnameFontsize,
+                    }}
+                    position={position}
+                    positionConfig={{
+                        xAxis: positionXAxis,
+                        yAxis: positionYAxis,
+                        fontSize: positionFontsize,
+                    }}
+                    department={user.department}
+                    departmentConfig={{
+                        xAxis: officeInputXAxis,
+                        yAxis: officeInputYAxis,
+                        fontSize: officeInputFontSize,
+                    }}
+                    picturePreviewUrl={picturePreviewUrl}
+                    picturePreviewConfig={{
+                        xAxis: pictureXAxis,
+                        yAxis: pictureYAxis,
+                        scale: pictureScale,
+                    }}
+                />
+                <CardLayout
+                    firstname={firstname}
+                    firstnameConfig={{
+                        xAxis: firstnameXAxis,
+                        yAxis: firstnameYAxis,
+                        fontSize: firstnameFontsize,
+                    }}
+                    lastname={lastname}
+                    lastnameConfig={{
+                        xAxis: lastnameXAxis,
+                        yAxis: lastnameYAxis,
+                        fontSize: lastnameFontsize,
+                    }}
+                    position={position}
+                    positionConfig={{
+                        xAxis: positionXAxis,
+                        yAxis: positionYAxis,
+                        fontSize: positionFontsize,
+                    }}
+                    department={user.department}
+                    departmentConfig={{
+                        xAxis: officeInputXAxis,
+                        yAxis: officeInputYAxis,
+                        fontSize: officeInputFontSize,
+                    }}
+                    picturePreviewUrl={picturePreviewUrl}
+                    picturePreviewConfig={{
+                        xAxis: pictureXAxis,
+                        yAxis: pictureYAxis,
+                        scale: pictureScale,
+                    }}
+                />
             </div>
         </TemplateLayout>
     );

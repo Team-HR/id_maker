@@ -20,7 +20,7 @@ class OfficeIdController extends Controller
             'position' => $request->position,
             'department' => $request->department,
             'picture' => $path,
-            'configs' => json_encode($request->configs),
+            'configs' => json_decode($request->configs),
         ]);
 
         return response()->json(['message' => 'Created Successfully', 'officeId' => $officeId]);
