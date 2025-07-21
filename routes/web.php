@@ -1,29 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OfficeIdController;
-use App\Http\Controllers\ProfileController;
 use App\Models\OfficeId;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
-Route::get('/login', function () {
-    return Inertia::render('Login');
-})->name('login');
-
-Route::post('/login', [AuthController::class,'login'])->name('login.post');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
@@ -34,23 +14,12 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard', [ 'office_ids' => $office_ids]);
     })->name('dashboard');
 
-    Route::post('/office-id/save', [OfficeIdController::class, 'save'])->name('office-id.save');
-    Route::post('/office-id/update/{id}', [OfficeIdController::class, 'patch'])->name('office-id.patch');
-    Route::get('/office-id/search', [OfficeIdController::class, 'search_office_id'])->name('office-id.search');
-
-    
     Route::get('/settings', function () {
         return Inertia::render('Settings');
     })->name('settings');
 
-    Route::get('/logout', function (Request $request) {
-        Auth::logout(); // Logs the user out
-
-        $request->session()->invalidate(); // Invalidate the session
-        $request->session()->regenerateToken(); // Regenerate CSRF token
-
-        return to_route('login');
-    })->name('logout');
 });
 
-// require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/office-id.php';
+require __DIR__.'/account-settings.php';

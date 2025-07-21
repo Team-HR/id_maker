@@ -14,7 +14,7 @@ export interface OfficeId {
     id: number;
     user_id: number;
     firstname: string;
-    lastname: string;
+    lastname: string | null;
     picture: string;
     position: string | null;
     department: string;

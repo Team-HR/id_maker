@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('office_ids', function (Blueprint $table) {
             $table->id();
             $table->string('firstname');
-            $table->string('lastname');
+            $table->string('lastname')->nullable();
             $table->string('picture');
             $table->string('position')->nullable();
             $table->string('department');

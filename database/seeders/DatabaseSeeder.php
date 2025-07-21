@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
             ["department" => "Office of the Secretary to the Sangguniang Panglungsod", "username" => "sp_sec", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 20]]]],
             ["department" => "Public Market & Slaughterhouse", "username" => "pmarket_sh", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
             ["department" => "Sangguniang Panglungsod", "username" => "sp", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
+            ["department" => "City College of Bayawan", "username" => "ccb", "configs" => ["office_id_template" => ["department" => ["xAxis" => 10, "yAxis" => 445, "fontSize" => 21]]]],
         ];
 
         foreach ($departments as $department) {

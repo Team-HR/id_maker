@@ -66,7 +66,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
             setIdToEdit(idToEdit);
 
             setFirstname(idToEdit.firstname);
-            setLastname(idToEdit.lastname);
+            setLastname(idToEdit.lastname ?? "");
             setPosition(idToEdit.position ?? "");
             setOfficeInput(idToEdit.department);
             setPicturePreviewUrl("storage/" + idToEdit?.picture);
@@ -135,7 +135,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
         const filteredRecords = office_ids.filter((record) => {
             const first = record.firstname.toLowerCase();
-            const last = record.lastname.toLowerCase();
+            const last = record.lastname?.toLowerCase() ?? "";
 
             return (
                 first.includes(normalizedQuery) ||
@@ -407,12 +407,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                 await setIsPrinting(true);
                                 reactToPrintFn();
                             }}
-                            disabled={
-                                !firstname ||
-                                !lastname ||
-                                !picturePreviewUrl ||
-                                !officeInput
-                            }
+                            disabled={!picturePreviewUrl || !officeInput}
                         >
                             Print
                         </button>
