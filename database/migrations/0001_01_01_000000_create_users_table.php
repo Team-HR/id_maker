@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->json('configs')->nullable();
-            $table->json('roles')->default(json_encode(['editor']));
+            $table->json('roles');
             $table->enum('status',['active','inactive']);
             $table->rememberToken();
             $table->timestamps();

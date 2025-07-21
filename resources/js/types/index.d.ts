@@ -5,7 +5,7 @@ export interface User {
     department: string;
     username: string;
     status: "active" | "inactive";
-    roles: string[];
+    roles: ["sudo_admin", "editor"];
     configs: {
         office_id_template?: {
             department?: FieldConfig;
