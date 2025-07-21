@@ -63,6 +63,8 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
     useEffect(() => {
         if (idToEdit) {
+            setIdToEdit(idToEdit);
+
             setFirstname(idToEdit.firstname);
             setLastname(idToEdit.lastname);
             setPosition(idToEdit.position ?? "");
@@ -467,8 +469,8 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <div className="overflow-auto max-h-96 rounded-box border border-base-content/5 bg-base-200">
-                                <table className="table table-sm border border-base-content/5">
+                            <div className="overflow-auto max-h-96 rounded-box bg-base-200">
+                                <table className="table table-sm">
                                     <tbody>
                                         {searchQuery === ""
                                             ? officeIds.map(
@@ -485,11 +487,12 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                           <th className="uppercase">
                                                               <button
                                                                   className="btn btn-primary btn-sm"
-                                                                  onClick={() =>
-                                                                      setIdToEdit(
+                                                                  onClick={async () => {
+                                                                      await reset();
+                                                                      await setIdToEdit(
                                                                           office_id
-                                                                      )
-                                                                  }
+                                                                      );
+                                                                  }}
                                                               >
                                                                   View
                                                               </button>
@@ -511,7 +514,8 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                           <th className="uppercase">
                                                               <button
                                                                   className="btn btn-primary btn-sm"
-                                                                  onClick={() => {
+                                                                  onClick={async () => {
+                                                                      await reset();
                                                                       setIdToEdit(
                                                                           office_id
                                                                       );
