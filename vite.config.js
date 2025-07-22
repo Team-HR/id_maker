@@ -16,7 +16,7 @@ export default defineConfig({
         port: 5173, // <- default Vite port
         strictPort: true,
         hmr: {
-            host: "192.168.50.51", // use your IP or 'localhost' if local only
+            host: "192.168.50.51",
         },
     },
 });
