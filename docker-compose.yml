@@ -7,25 +7,25 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - "8031:9000" # localhost:8000 → container:9000 (PHP-FPM or Laravel)
+            - "8031:80" # Apache serves on port 80
         volumes:
-            - .:/var/www
-        working_dir: /var/www
+            - .:/var/www/html
+        working_dir: /var/www/html
         # depends_on:
-        #     - mysql
+        #   - mysql
 
     # mysql:
-    #     image: mysql:8.0
-    #     container_name: laravel_id_maker_mysql_db
-    #     restart: unless-stopped
-    #     ports:
-    #         - "3306:3306"
-    #     environment:
-    #         MYSQL_DATABASE: id_maker
-    #         MYSQL_USER: root
-    #         MYSQL_PASSWORD: teamhrmo2019
-    #         MYSQL_ROOT_PASSWORD: rootsecret
-    #     volumes:
-    #         - db_data:/var/lib/mysql
+    #   image: mysql:8.0
+    #   container_name: laravel_id_maker_mysql_db
+    #   restart: unless-stopped
+    #   ports:
+    #     - "3306:3306"
+    #   environment:
+    #     MYSQL_DATABASE: id_maker
+    #     MYSQL_USER: root
+    #     MYSQL_PASSWORD: teamhrmo2019
+    #     MYSQL_ROOT_PASSWORD: rootsecret
+    #   volumes:
+    #     - db_data:/var/lib/mysql
 # volumes:
-#     db_data:
+#   db_data:
