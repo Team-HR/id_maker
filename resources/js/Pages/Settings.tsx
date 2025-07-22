@@ -51,7 +51,7 @@ const Settings = ({ auth, errors }: Props) => {
             {},
             {
                 onSuccess: () => {
-                    setIsEditingUsername(false);
+                    setIsEditingPassword(false);
                     showToast("success", "Password updated successfully");
                 },
             }

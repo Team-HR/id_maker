@@ -31,6 +31,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [positionYAxis, setPositionYAxis] = useState(385);
     const [positionFontsize, setPositionFontsize] = useState(20);
 
+    const [cityOfficesArray, setCityOfficesArray] = useState(cityOffices);
     const [officeInput, setOfficeInput] = useState("");
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
     const [officeInputYAxis, setOfficeInputYAxis] = useState(445);
@@ -130,7 +131,15 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         }
     }, [searchQuery]);
 
-    const handleSearchFiltering = (searchQuery: string) => {
+    const handleSearchFiltering = async (searchQuery: string) => {
+        if (user.roles.includes("sudo_admin")) {
+            await axios
+                .get(route("office-id.search", { query: searchQuery }))
+                .then((res) => setFilteredOfficeIds(res.data));
+
+            return;
+        }
+
         const normalizedQuery = searchQuery.trim().toLowerCase();
 
         const filteredRecords = office_ids.filter((record) => {
@@ -144,6 +153,19 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         });
 
         setFilteredOfficeIds(filteredRecords);
+    };
+
+    const handleCityOfficesSearch = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const input = e.target.value;
+        setOfficeInput(input);
+
+        const filtered = cityOffices.filter((office) =>
+            office.toLowerCase().includes(input.toLowerCase())
+        );
+
+        setCityOfficesArray(filtered);
     };
 
     const handleSave = async () => {
@@ -378,14 +400,38 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     type="text"
                                     className="w-full input"
                                     value={officeInput}
-                                    // onChange={handleOfficeInputChange}
-                                    onChange={(e) =>
-                                        setOfficeInput(e.target.value)
+                                    onChange={(e) => {
+                                        handleCityOfficesSearch(e);
+                                    }}
+                                    disabled={
+                                        !user.roles.includes("sudo_admin")
                                     }
-                                    disabled
                                 />
                             </InputWithSettings>
                         </fieldset>
+                        {user.roles.includes("sudo_admin") && (
+                            <div className="overflow-auto border max-h-36 rounded-box border-base-content/5 bg-base-100">
+                                <table className="table">
+                                    <tbody>
+                                        {cityOfficesArray.map(
+                                            (office, index) => (
+                                                <tr
+                                                    key={index}
+                                                    className="cursor-pointer hover:bg-base-300"
+                                                    onClick={() => {
+                                                        setOfficeInput(office);
+                                                        setCityOfficesArray([]);
+                                                    }}
+                                                >
+                                                    <th>{office}</th>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
                         <div className="divider"></div>
                         <button
                             className={`btn btn-sm ${
@@ -440,7 +486,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                             yAxis: positionYAxis,
                             fontSize: positionFontsize,
                         }}
-                        department={user.department}
+                        department={officeInput}
                         departmentConfig={{
                             xAxis: officeInputXAxis,
                             yAxis: officeInputYAxis,
@@ -454,8 +500,8 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                         }}
                     />
                 </div>
-                <div className="max-w-4/12 w-full p-8 h-full">
-                    <div className="bg-base-100 p-8 shadow-lg">
+                <div className="w-full h-full p-8 max-w-4/12">
+                    <div className="p-8 shadow-lg bg-base-100">
                         <fieldset className="w-full fieldset">
                             <legend className="fieldset-legend">Search</legend>
                             <input
@@ -479,7 +525,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                                   " " +
                                                                   office_id.lastname}
                                                           </th>
-                                                          <th className="uppercase">
+                                                          <th className="uppercase text-end">
                                                               <button
                                                                   className="btn btn-primary btn-sm"
                                                                   onClick={async () => {
@@ -506,7 +552,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                                   " " +
                                                                   office_id.lastname}
                                                           </th>
-                                                          <th className="uppercase">
+                                                          <th className="uppercase text-end">
                                                               <button
                                                                   className="btn btn-primary btn-sm"
                                                                   onClick={async () => {
@@ -554,7 +600,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                         yAxis: positionYAxis,
                         fontSize: positionFontsize,
                     }}
-                    department={user.department}
+                    department={officeInput}
                     departmentConfig={{
                         xAxis: officeInputXAxis,
                         yAxis: officeInputYAxis,
@@ -586,7 +632,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                         yAxis: positionYAxis,
                         fontSize: positionFontsize,
                     }}
-                    department={user.department}
+                    department={officeInput}
                     departmentConfig={{
                         xAxis: officeInputXAxis,
                         yAxis: officeInputYAxis,
