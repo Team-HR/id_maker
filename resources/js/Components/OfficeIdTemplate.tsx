@@ -522,8 +522,10 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                       >
                                                           <th className="uppercase">
                                                               {office_id.firstname +
-                                                                  " " +
-                                                                  office_id.lastname}
+                                                                  (office_id.lastname
+                                                                      ? " " +
+                                                                        office_id.lastname
+                                                                      : "")}
                                                           </th>
                                                           <th className="uppercase text-end">
                                                               <button
@@ -549,8 +551,10 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                                       >
                                                           <th className="uppercase">
                                                               {office_id.firstname +
-                                                                  " " +
-                                                                  office_id.lastname}
+                                                                  (office_id.lastname
+                                                                      ? " " +
+                                                                        office_id.lastname
+                                                                      : "")}
                                                           </th>
                                                           <th className="uppercase text-end">
                                                               <button
