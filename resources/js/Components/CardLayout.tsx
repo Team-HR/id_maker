@@ -34,7 +34,7 @@ const CardLayout = ({
             <img
                 src="/images/office_id_template.png"
                 alt="id template"
-                className="relative z-10 object-contain w-full h-full"
+                className="relative z-10 object-contain w-full h-full pointer-events-none "
             />
             <img
                 src={picturePreviewUrl}
@@ -46,6 +46,7 @@ const CardLayout = ({
                     width: picturePreviewConfig.scale,
                 }}
             />
+
             <div
                 className="absolute z-20 font-semibold uppercase text-base-100"
                 style={{
