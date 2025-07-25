@@ -127,17 +127,13 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
             setFirstnameYAxis(
                 user.configs.office_id_template?.firstname?.yAxis ?? 310
             );
+            setFirstnameFontsize(
+                user.configs.office_id_template?.firstname?.fontSize ?? 35
+            );
 
             setOfficeInput(user.department);
         }
     }, [user]);
-
-    let test = {
-        office_id_template: {
-            department: { xAxis: 10, yAxis: 445, fontSize: 21 },
-            firstname: { xAxis: 10, yAxis: 320 },
-        },
-    };
 
     useEffect(() => {
         if (searchQuery) {
@@ -251,14 +247,20 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
     const reset = () => {
         setFirstname("");
-        setFirstnameXAxis(10);
-        setFirstnameYAxis(310);
-        setFirstnameFontsize(30);
+        setFirstnameXAxis(
+            user.configs.office_id_template?.firstname?.xAxis ?? 10
+        );
+        setFirstnameYAxis(
+            user.configs.office_id_template?.firstname?.yAxis ?? 310
+        );
+        setFirstnameFontsize(
+            user.configs.office_id_template?.firstname?.fontSize ?? 35
+        );
 
         setLastname("");
         setLastnameXAxis(10);
         setLastnameYAxis(340);
-        setLastnameFontsize(30);
+        setLastnameFontsize(35);
 
         setPosition("");
         setPositionXAxis(10);
