@@ -9,6 +9,7 @@ export interface User {
     configs: {
         office_id_template?: {
             department?: FieldConfig;
+            firstname?: FieldConfig;
         };
     };
     created_at: string;

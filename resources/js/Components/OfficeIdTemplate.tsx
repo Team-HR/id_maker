@@ -19,12 +19,12 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [firstname, setFirstname] = useState("");
     const [firstnameXAxis, setFirstnameXAxis] = useState(10);
     const [firstnameYAxis, setFirstnameYAxis] = useState(310);
-    const [firstnameFontsize, setFirstnameFontsize] = useState(30);
+    const [firstnameFontsize, setFirstnameFontsize] = useState(35);
 
     const [lastname, setLastname] = useState("");
     const [lastnameXAxis, setLastnameXAxis] = useState(10);
     const [lastnameYAxis, setLastnameYAxis] = useState(340);
-    const [lastnameFontsize, setLastnameFontsize] = useState(30);
+    const [lastnameFontsize, setLastnameFontsize] = useState(35);
 
     const [position, setPosition] = useState("");
     const [positionXAxis, setPositionXAxis] = useState(10);
@@ -121,9 +121,23 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
             setOfficeInputFontSize(
                 user.configs.office_id_template?.department?.fontSize ?? 21
             );
+            setFirstnameXAxis(
+                user.configs.office_id_template?.firstname?.xAxis ?? 10
+            );
+            setFirstnameYAxis(
+                user.configs.office_id_template?.firstname?.yAxis ?? 310
+            );
+
             setOfficeInput(user.department);
         }
     }, [user]);
+
+    let test = {
+        office_id_template: {
+            department: { xAxis: 10, yAxis: 445, fontSize: 21 },
+            firstname: { xAxis: 10, yAxis: 320 },
+        },
+    };
 
     useEffect(() => {
         if (searchQuery) {
@@ -586,6 +600,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 ref={contentRef}
             >
                 <CardLayout
+                    className="border-t-2 border-b border-l-2"
                     firstname={firstname}
                     firstnameConfig={{
                         xAxis: firstnameXAxis,
@@ -618,6 +633,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                     }}
                 />
                 <CardLayout
+                    className="border-t-2 border-b border-r"
                     firstname={firstname}
                     firstnameConfig={{
                         xAxis: firstnameXAxis,

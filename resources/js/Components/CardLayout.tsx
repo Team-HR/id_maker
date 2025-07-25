@@ -12,6 +12,7 @@ interface Props {
     positionConfig?: FieldConfig;
     department: string;
     departmentConfig: FieldConfig;
+    className?: string;
 }
 
 const CardLayout = ({
@@ -25,11 +26,12 @@ const CardLayout = ({
     positionConfig,
     department,
     departmentConfig,
+    className,
 }: Props) => {
     return (
         <div
             style={{ width: "3.79in", height: "5.48in" }}
-            className="relative overflow-hidden shadow bg-base-100"
+            className={`relative overflow-hidden shadow bg-base-100 ${className}`}
         >
             <img
                 src="/images/office_id_template.png"
