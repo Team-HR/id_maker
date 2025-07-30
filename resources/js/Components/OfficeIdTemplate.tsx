@@ -454,12 +454,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                 idToEdit ? "btn-secondary" : "btn-primary"
                             }`}
                             onClick={() => handleSave()}
-                            disabled={
-                                !firstname ||
-                                !lastname ||
-                                !picturePreviewUrl ||
-                                !officeInput
-                            }
+                            disabled={!picturePreviewUrl || !officeInput}
                         >
                             {idToEdit ? "Update" : "Save"}
                         </button>
@@ -602,7 +597,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 ref={contentRef}
             >
                 <CardLayout
-                    className="border-t-2 border-b border-l-2"
+                    className="border-t-2 border-b border-l-2 border-primary"
                     firstname={firstname}
                     firstnameConfig={{
                         xAxis: firstnameXAxis,
@@ -635,7 +630,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                     }}
                 />
                 <CardLayout
-                    className="border-t-2 border-b border-r"
+                    className="border-t-2 border-b border-r border-primary"
                     firstname={firstname}
                     firstnameConfig={{
                         xAxis: firstnameXAxis,

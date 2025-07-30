@@ -41,11 +41,14 @@ const CardLayout = ({
             <img
                 src={picturePreviewUrl}
                 alt="pp"
-                className="absolute z-[5] object-cover"
+                className="absolute z-[5] object-contain"
                 style={{
                     right: picturePreviewConfig.xAxis,
                     top: picturePreviewConfig.yAxis,
                     width: picturePreviewConfig.scale,
+                    height: "auto", // preserve aspect ratio
+                    maxWidth: "none",
+                    maxHeight: "none",
                 }}
             />
 
