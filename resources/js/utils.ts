@@ -20,6 +20,7 @@ export const cityOffices = [
     "City Public Safety Office",
     "City Social Welfare & Development Office",
     "City Treasurer's Office",
+    "City Transport and Traffic Management Office",
     "City Veterinary Office",
     "City Vice-Mayor's Office",
     "DepEd/Bayawan East Central School",
