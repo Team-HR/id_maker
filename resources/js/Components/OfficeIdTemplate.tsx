@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputWithSettings from "./InputWithSettings";
-import { cityOffices } from "@/utils";
+import {
+    cityOffices,
+    officePositions as importedOfficePositions,
+} from "@/utils";
 import { router, usePage } from "@inertiajs/react";
 import { useReactToPrint } from "react-to-print";
 import { OfficeId } from "@/types/types";
@@ -47,6 +50,11 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     // OFFICE IDS FROM PROPS
     const [officeIds, setOfficeIds] = useState<OfficeId[]>(office_ids ?? []);
     const [filteredOfficeIds, setFilteredOfficeIds] = useState<OfficeId[]>([]);
+
+    // OFFICE POSITIONS
+    const [officePositions, setOfficePositions] = useState(
+        importedOfficePositions ?? []
+    );
 
     // FOR PRINTING HERE
     const [isPrinting, setIsPrinting] = useState(false);
@@ -140,6 +148,19 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
             handleSearchFiltering(searchQuery);
         }
     }, [searchQuery]);
+
+    const handleOfficePositionFiltering = (posQuery: string) => {
+        if (!posQuery) {
+            setOfficePositions(importedOfficePositions);
+            return;
+        }
+
+        setOfficePositions(
+            importedOfficePositions.filter((position) =>
+                position.toLowerCase().includes(posQuery.toLowerCase())
+            )
+        );
+    };
 
     const handleSearchFiltering = async (searchQuery: string) => {
         if (user.roles.includes("sudo_admin")) {
@@ -392,12 +413,34 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     type="text"
                                     className="w-full input"
                                     value={position}
-                                    onChange={(e) =>
-                                        setPosition(e.target.value)
-                                    }
+                                    onChange={(e) => {
+                                        setPosition(e.target.value);
+                                        handleOfficePositionFiltering(
+                                            e.target.value
+                                        );
+                                    }}
                                 />
                             </InputWithSettings>
                         </fieldset>
+
+                        <div className="overflow-auto border max-h-36 rounded-box border-base-content/5 bg-base-100">
+                            <table className="table">
+                                <tbody>
+                                    {officePositions.map((position, index) => (
+                                        <tr
+                                            key={index}
+                                            className="cursor-pointer hover:bg-base-300"
+                                            onClick={() => {
+                                                setPosition(position);
+                                                setOfficePositions([]);
+                                            }}
+                                        >
+                                            <th>{position}</th>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">

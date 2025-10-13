@@ -34,3 +34,5 @@ export const cityOffices = [
     "Public Market & Slaughterhouse",
     "Sangguniang Panglungsod",
 ];
+
+export const officePositions = ["Administrative Aide I", "Job Order Worker"];
