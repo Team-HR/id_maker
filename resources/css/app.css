@@ -39,3 +39,30 @@
 :root {
     background-color: var(--color-base-300);
 }
+
+@font-face {
+    font-family: "barabara";
+    src: url("/public/fonts/barabara.otf") format("opentype");
+}
+
+.font-barabara {
+    font-family: "barabara", sans-serif;
+}
+
+@font-face {
+    font-family: "Montserrat-Bold";
+    src: url("/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+.font-montserrat-bold {
+    font-family: "Montserrat-Bold", sans-serif;
+}
+
+@font-face {
+    font-family: "Montserrat-Medium";
+    src: url("/fonts/Montserrat-Medium.ttf") format("truetype");
+}
+
+.font-montserrat-medium {
+    font-family: "Montserrat-Medium", sans-serif;
+}

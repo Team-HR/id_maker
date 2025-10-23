@@ -53,7 +53,7 @@ const CardLayout = ({
             />
 
             <div
-                className="absolute left-0 z-20 w-full font-semibold text-center uppercase text-base-100"
+                className="absolute left-0 z-20 w-full font-semibold text-center uppercase text-base-100 font-montserrat-bold"
                 style={{
                     fontSize: firstnameConfig.fontSize,
                     right: firstnameConfig.xAxis,
@@ -73,7 +73,7 @@ const CardLayout = ({
                 {lastname}
             </div> */}
             <div
-                className="absolute left-0 z-20 w-full font-serif text-center text-neutral"
+                className="absolute left-0 z-20 w-full font-serif text-center uppercase font-montserrat-medium text-base-100"
                 style={{
                     fontSize: positionConfig?.fontSize,
                     right: positionConfig?.xAxis,
@@ -83,7 +83,7 @@ const CardLayout = ({
                 {position}
             </div>
             <div
-                className="absolute z-20 leading-5 max-w-80 text-end text-base-100"
+                className="absolute z-20 leading-5 uppercase max-w-80 text-end text-base-100 font-barabara"
                 style={{
                     fontSize: departmentConfig.fontSize,
                     right: departmentConfig.xAxis,

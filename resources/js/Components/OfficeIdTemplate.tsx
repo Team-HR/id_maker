@@ -32,13 +32,13 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [position, setPosition] = useState("");
     const [positionXAxis, setPositionXAxis] = useState(10);
     const [positionYAxis, setPositionYAxis] = useState(367);
-    const [positionFontsize, setPositionFontsize] = useState(20);
+    const [positionFontsize, setPositionFontsize] = useState(17);
 
     const [cityOfficesArray, setCityOfficesArray] = useState(cityOffices);
     const [officeInput, setOfficeInput] = useState("");
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
     const [officeInputYAxis, setOfficeInputYAxis] = useState(430);
-    const [officeInputFontSize, setOfficeInputFontSize] = useState(20);
+    const [officeInputFontSize, setOfficeInputFontSize] = useState(15);
 
     const [picture, setPicture] = useState<File | null>(null);
     const [picturePreviewUrl, setPicturePreviewUrl] = useState<string>("");
@@ -286,7 +286,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         setPosition("");
         setPositionXAxis(10);
         setPositionYAxis(367);
-        setPositionFontsize(20);
+        setPositionFontsize(17);
         setOfficePositions(importedOfficePositions);
 
         setOfficeInput(user.department ?? "");
