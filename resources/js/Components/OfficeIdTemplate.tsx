@@ -463,9 +463,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     onChange={(e) => {
                                         handleCityOfficesSearch(e);
                                     }}
-                                    disabled={
-                                        !user.roles.includes("sudo_admin")
-                                    }
                                 />
                             </InputWithSettings>
                         </fieldset>
