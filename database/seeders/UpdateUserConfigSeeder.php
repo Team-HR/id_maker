@@ -3,15 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class DatabaseSeeder extends Seeder
+class UpdateUserConfigSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
@@ -52,20 +50,12 @@ class DatabaseSeeder extends Seeder
         ];
 
 
-        foreach ($departments as $department) {
-            $plainPassword = Str::random(8);
+        foreach($departments as $dep) {
+            $user = User::where('username', $dep['username']);
 
-            User::create([
-                'department' => $department['department'],    
-                'username' => $department['username'],
-                'password' => Hash::make($plainPassword),
-                'configs' => $department['configs'],
-                'roles' => json_encode($department['roles']),
-                'status' => 'active',
+            $user->update([
+                'configs' => $dep['configs'],
             ]);
-
-            // dd("Username: {$username} | Password: {$plainPassword} | Department: {$department}");
-            $this->command->info("Username: {$department['username']} | Password: {$plainPassword} | Department: {$department['department']}");
         }
     }
 }

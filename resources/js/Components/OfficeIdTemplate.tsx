@@ -20,25 +20,25 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [searchResult, setSearchResult] = useState<OfficeId[]>([]);
 
     const [firstname, setFirstname] = useState("");
-    const [firstnameXAxis, setFirstnameXAxis] = useState(10);
-    const [firstnameYAxis, setFirstnameYAxis] = useState(310);
-    const [firstnameFontsize, setFirstnameFontsize] = useState(35);
+    const [firstnameXAxis, setFirstnameXAxis] = useState(0);
+    const [firstnameYAxis, setFirstnameYAxis] = useState(316);
+    const [firstnameFontsize, setFirstnameFontsize] = useState(27);
 
     const [lastname, setLastname] = useState("");
     const [lastnameXAxis, setLastnameXAxis] = useState(10);
     const [lastnameYAxis, setLastnameYAxis] = useState(340);
-    const [lastnameFontsize, setLastnameFontsize] = useState(35);
+    const [lastnameFontsize, setLastnameFontsize] = useState(20);
 
     const [position, setPosition] = useState("");
     const [positionXAxis, setPositionXAxis] = useState(10);
-    const [positionYAxis, setPositionYAxis] = useState(385);
+    const [positionYAxis, setPositionYAxis] = useState(367);
     const [positionFontsize, setPositionFontsize] = useState(20);
 
     const [cityOfficesArray, setCityOfficesArray] = useState(cityOffices);
     const [officeInput, setOfficeInput] = useState("");
     const [officeInputXAxis, setOfficeInputXAxis] = useState(10);
-    const [officeInputYAxis, setOfficeInputYAxis] = useState(445);
-    const [officeInputFontSize, setOfficeInputFontSize] = useState(21);
+    const [officeInputYAxis, setOfficeInputYAxis] = useState(430);
+    const [officeInputFontSize, setOfficeInputFontSize] = useState(20);
 
     const [picture, setPicture] = useState<File | null>(null);
     const [picturePreviewUrl, setPicturePreviewUrl] = useState<string>("");
@@ -124,19 +124,19 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 user.configs.office_id_template?.department?.xAxis ?? 10
             );
             setOfficeInputYAxis(
-                user.configs.office_id_template?.department?.yAxis ?? 445
+                user.configs.office_id_template?.department?.yAxis ?? 430
             );
             setOfficeInputFontSize(
-                user.configs.office_id_template?.department?.fontSize ?? 21
+                user.configs.office_id_template?.department?.fontSize ?? 20
             );
             setFirstnameXAxis(
                 user.configs.office_id_template?.firstname?.xAxis ?? 10
             );
             setFirstnameYAxis(
-                user.configs.office_id_template?.firstname?.yAxis ?? 310
+                user.configs.office_id_template?.firstname?.yAxis ?? 316
             );
             setFirstnameFontsize(
-                user.configs.office_id_template?.firstname?.fontSize ?? 35
+                user.configs.office_id_template?.firstname?.fontSize ?? 27
             );
 
             setOfficeInput(user.department);
@@ -272,10 +272,10 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
             user.configs.office_id_template?.firstname?.xAxis ?? 10
         );
         setFirstnameYAxis(
-            user.configs.office_id_template?.firstname?.yAxis ?? 310
+            user.configs.office_id_template?.firstname?.yAxis ?? 316
         );
         setFirstnameFontsize(
-            user.configs.office_id_template?.firstname?.fontSize ?? 35
+            user.configs.office_id_template?.firstname?.fontSize ?? 27
         );
 
         setLastname("");
@@ -285,18 +285,19 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
         setPosition("");
         setPositionXAxis(10);
-        setPositionYAxis(385);
+        setPositionYAxis(367);
         setPositionFontsize(20);
+        setOfficePositions(importedOfficePositions);
 
         setOfficeInput(user.department ?? "");
         setOfficeInputXAxis(
             user.configs.office_id_template?.department?.xAxis ?? 10
         );
         setOfficeInputYAxis(
-            user.configs.office_id_template?.department?.yAxis ?? 445
+            user.configs.office_id_template?.department?.yAxis ?? 430
         );
         setOfficeInputFontSize(
-            user.configs.office_id_template?.department?.fontSize ?? 21
+            user.configs.office_id_template?.department?.fontSize ?? 20
         );
 
         setPicture(null);
@@ -319,7 +320,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                         <div className="flex gap-2">
                             <fieldset className="w-full fieldset">
                                 <legend className="fieldset-legend">
-                                    Firstname
+                                    Fullname
                                 </legend>
                                 <InputWithSettings
                                     xAxis={firstnameXAxis}
@@ -340,7 +341,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     />
                                 </InputWithSettings>
                             </fieldset>
-                            <fieldset className="w-full fieldset">
+                            {/* <fieldset className="w-full fieldset">
                                 <legend className="fieldset-legend">
                                     Lastname
                                 </legend>
@@ -362,7 +363,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                         }
                                     />
                                 </InputWithSettings>
-                            </fieldset>
+                            </fieldset> */}
                         </div>
 
                         <fieldset className="w-full fieldset">

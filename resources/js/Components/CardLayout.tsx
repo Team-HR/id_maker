@@ -30,11 +30,11 @@ const CardLayout = ({
 }: Props) => {
     return (
         <div
-            style={{ width: "3.79in", height: "5.48in" }}
+            style={{ width: "3.79in", height: "5.42in" }}
             className={`relative overflow-hidden shadow bg-base-100 ${className}`}
         >
             <img
-                src="/images/office_id_template.png"
+                src="/images/new_office_id_template.png"
                 alt="id template"
                 className="relative z-10 object-contain w-full h-full pointer-events-none "
             />
@@ -53,7 +53,7 @@ const CardLayout = ({
             />
 
             <div
-                className="absolute z-20 font-semibold uppercase text-base-100"
+                className="absolute left-0 z-20 w-full font-semibold text-center uppercase text-base-100"
                 style={{
                     fontSize: firstnameConfig.fontSize,
                     right: firstnameConfig.xAxis,
@@ -62,7 +62,7 @@ const CardLayout = ({
             >
                 {firstname}
             </div>
-            <div
+            {/* <div
                 className="absolute z-20 font-semibold uppercase text-base-100"
                 style={{
                     fontSize: lastnameConfig.fontSize,
@@ -71,9 +71,9 @@ const CardLayout = ({
                 }}
             >
                 {lastname}
-            </div>
+            </div> */}
             <div
-                className="absolute z-20 font-serif text-neutral"
+                className="absolute left-0 z-20 w-full font-serif text-center text-neutral"
                 style={{
                     fontSize: positionConfig?.fontSize,
                     right: positionConfig?.xAxis,
