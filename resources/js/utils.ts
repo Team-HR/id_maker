@@ -32,6 +32,8 @@ export const cityOffices = [
     "Media Bureau",
     "National Agencies",
     "Office of the Secretary to the Sangguniang Panglungsod",
+    "Office of the Building Official",
+    "Business permit and licensing office",
     "Public Market & Slaughterhouse",
     "Sangguniang Panglungsod",
 ];

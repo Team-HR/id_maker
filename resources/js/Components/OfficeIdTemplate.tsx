@@ -513,7 +513,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                             className="btn btn-sm btn-primary btn-ghost"
                             onClick={reset}
                         >
-                            Reset
+                            Reset / New
                         </button>
                     </div>
                 </div>
