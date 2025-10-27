@@ -30,7 +30,7 @@ const CardLayout = ({
 }: Props) => {
     return (
         <div
-            style={{ width: "3.79in", height: "5.42in" }}
+            style={{ width: "3.79in", height: "5.41in" }}
             className={`relative overflow-hidden shadow bg-base-100 ${className}`}
         >
             <img

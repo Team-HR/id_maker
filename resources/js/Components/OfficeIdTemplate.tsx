@@ -42,9 +42,9 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
     const [picture, setPicture] = useState<File | null>(null);
     const [picturePreviewUrl, setPicturePreviewUrl] = useState<string>("");
-    const [pictureXAxis, setPictureXAxis] = useState(15);
-    const [pictureYAxis, setPictureYAxis] = useState(100);
-    const [pictureScale, setPictureScale] = useState(200);
+    const [pictureXAxis, setPictureXAxis] = useState(-70);
+    const [pictureYAxis, setPictureYAxis] = useState(88);
+    const [pictureScale, setPictureScale] = useState(350);
     const pictureInputRef = useRef<HTMLInputElement | null>(null);
 
     // OFFICE IDS FROM PROPS
@@ -302,9 +302,9 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
 
         setPicture(null);
         setPicturePreviewUrl("");
-        setPictureXAxis(15);
-        setPictureYAxis(100);
-        setPictureScale(200);
+        setPictureXAxis(-70);
+        setPictureYAxis(88);
+        setPictureScale(350);
         if (pictureInputRef.current) {
             pictureInputRef.current.value = "";
         }
@@ -638,7 +638,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                 ref={contentRef}
             >
                 <CardLayout
-                    className="border-t-2 border-b border-l-2 border-primary"
+                    className="border-t-2 border-b border-l-2 border-r border-primary"
                     firstname={firstname}
                     firstnameConfig={{
                         xAxis: firstnameXAxis,
