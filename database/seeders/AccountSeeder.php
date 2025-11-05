@@ -18,21 +18,21 @@ class AccountSeeder extends Seeder
         $account = ["configs" => ["xAxis" => 10, "yAxis" => 430, "fontSize" => 20], "roles" => ['editor']];
 
         User::create([
-            'department' => 'Business permit and licensing office',    
-            'username' => 'bplo!',
-            'password' => Hash::make('bplo1234'),
+            'department' => 'City General Services Office',    
+            'username' => 'cgso_warehouse!',
+            'password' => Hash::make('warehouse1234'),
             'configs' => $account['configs'],
             'roles' => json_encode($account['roles']),
             'status' => 'active',
         ]);
 
-        User::create([
-            'department' => 'Office of the Building Official',    
-            'username' => 'obo!',
-            'password' => Hash::make('obo1234'),
-            'configs' => $account['configs'],
-            'roles' => json_encode($account['roles']),
-            'status' => 'active',
-        ]);
+        // User::create([
+        //     'department' => 'Office of the Building Official',    
+        //     'username' => 'obo!',
+        //     'password' => Hash::make('obo1234'),
+        //     'configs' => $account['configs'],
+        //     'roles' => json_encode($account['roles']),
+        //     'status' => 'active',
+        // ]);
     }
 }
