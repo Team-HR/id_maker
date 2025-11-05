@@ -62,8 +62,8 @@ const CardLayout = ({
             >
                 {firstname}
             </div>
-            {/* <div
-                className="absolute z-20 font-semibold uppercase text-base-100"
+            <div
+                className="absolute z-20 flex justify-center w-full font-semibold uppercase text-base-100"
                 style={{
                     fontSize: lastnameConfig.fontSize,
                     right: lastnameConfig.xAxis,
@@ -71,7 +71,7 @@ const CardLayout = ({
                 }}
             >
                 {lastname}
-            </div> */}
+            </div>
             <div
                 className="absolute left-0 z-20 w-full font-serif text-center uppercase font-montserrat-medium text-base-100"
                 style={{

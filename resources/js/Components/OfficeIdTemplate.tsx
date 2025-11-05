@@ -25,9 +25,9 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
     const [firstnameFontsize, setFirstnameFontsize] = useState(27);
 
     const [lastname, setLastname] = useState("");
-    const [lastnameXAxis, setLastnameXAxis] = useState(10);
-    const [lastnameYAxis, setLastnameYAxis] = useState(340);
-    const [lastnameFontsize, setLastnameFontsize] = useState(20);
+    const [lastnameXAxis, setLastnameXAxis] = useState(0);
+    const [lastnameYAxis, setLastnameYAxis] = useState(385);
+    const [lastnameFontsize, setLastnameFontsize] = useState(15);
 
     const [position, setPosition] = useState("");
     const [positionXAxis, setPositionXAxis] = useState(10);
@@ -341,7 +341,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     />
                                 </InputWithSettings>
                             </fieldset>
-                            {/* <fieldset className="w-full fieldset">
+                            <fieldset className="w-full fieldset">
                                 <legend className="fieldset-legend">
                                     Lastname
                                 </legend>
@@ -363,7 +363,7 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                         }
                                     />
                                 </InputWithSettings>
-                            </fieldset> */}
+                            </fieldset>
                         </div>
 
                         <fieldset className="w-full fieldset">
