@@ -341,29 +341,6 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                     />
                                 </InputWithSettings>
                             </fieldset>
-                            <fieldset className="w-full fieldset">
-                                <legend className="fieldset-legend">
-                                    Lastname
-                                </legend>
-                                <InputWithSettings
-                                    xAxis={lastnameXAxis}
-                                    setXAxis={setLastnameXAxis}
-                                    yAxis={lastnameYAxis}
-                                    setYAxis={setLastnameYAxis}
-                                    fontSize={lastnameFontsize}
-                                    setFontSize={setLastnameFontsize}
-                                    disabled={!lastname}
-                                >
-                                    <input
-                                        type="text"
-                                        className="w-full input"
-                                        value={lastname}
-                                        onChange={(e) =>
-                                            setLastname(e.target.value)
-                                        }
-                                    />
-                                </InputWithSettings>
-                            </fieldset>
                         </div>
 
                         <fieldset className="w-full fieldset">
@@ -442,6 +419,29 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
                                 </tbody>
                             </table>
                         </div>
+                        <fieldset className="w-full fieldset">
+                            <legend className="fieldset-legend">
+                                Position Sub Header
+                            </legend>
+                            <InputWithSettings
+                                xAxis={lastnameXAxis}
+                                setXAxis={setLastnameXAxis}
+                                yAxis={lastnameYAxis}
+                                setYAxis={setLastnameYAxis}
+                                fontSize={lastnameFontsize}
+                                setFontSize={setLastnameFontsize}
+                                disabled={!lastname}
+                            >
+                                <input
+                                    type="text"
+                                    className="w-full input"
+                                    value={lastname}
+                                    onChange={(e) =>
+                                        setLastname(e.target.value)
+                                    }
+                                />
+                            </InputWithSettings>
+                        </fieldset>
 
                         <fieldset className="fieldset">
                             <legend className="fieldset-legend">
