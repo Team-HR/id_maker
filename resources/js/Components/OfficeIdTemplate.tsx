@@ -279,9 +279,9 @@ const OfficeIdtemplate = ({ office_ids }: { office_ids: OfficeId[] }) => {
         );
 
         setLastname("");
-        setLastnameXAxis(10);
-        setLastnameYAxis(340);
-        setLastnameFontsize(35);
+        setLastnameXAxis(0);
+        setLastnameYAxis(385);
+        setLastnameFontsize(15);
 
         setPosition("");
         setPositionXAxis(10);
